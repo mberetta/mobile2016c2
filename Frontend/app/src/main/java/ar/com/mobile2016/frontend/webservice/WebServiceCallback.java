@@ -6,5 +6,6 @@ package ar.com.mobile2016.frontend.webservice;
 public interface WebServiceCallback<ResponseType> {
 
     void onFinished(WebServiceResponse<ResponseType> webServiceResponse);
+    void onError(Throwable ex);
 
 }

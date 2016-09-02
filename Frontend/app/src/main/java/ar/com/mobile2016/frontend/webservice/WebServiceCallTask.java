@@ -21,6 +21,7 @@ public class WebServiceCallTask<ResponseType> extends AsyncTask<Void, Void, WebS
     private URL url;
     private String method;
     private WebServiceCallback<ResponseType> webServiceCallback;
+    private Throwable exception;
 
     public WebServiceCallTask(Class<ResponseType> responseClass, String url, String method) {
         this.responseClass = responseClass;
@@ -40,8 +41,9 @@ public class WebServiceCallTask<ResponseType> extends AsyncTask<Void, Void, WebS
             conn.setRequestMethod(method);
             String responseBody = readStringFromInputStream(conn.getInputStream(), DEFAULT_CHARSET);
             return new WebServiceResponse<ResponseType>(conn.getResponseCode(), responseBody, responseClass);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Throwable e) {
+            exception = e;
+            return null;
         } finally {
             if (conn != null) {
                 conn.disconnect();
@@ -62,7 +64,11 @@ public class WebServiceCallTask<ResponseType> extends AsyncTask<Void, Void, WebS
 
     @Override
     protected void onPostExecute(WebServiceResponse<ResponseType> webServiceResponse) {
-        if (webServiceCallback != null) webServiceCallback.onFinished(webServiceResponse);
+        if (exception != null) {
+            if (webServiceCallback != null) webServiceCallback.onError(exception);
+        } else {
+            if (webServiceCallback != null) webServiceCallback.onFinished(webServiceResponse);
+        }
     }
 
     public void setWebServiceCallback(WebServiceCallback<ResponseType> webServiceCallback) {
