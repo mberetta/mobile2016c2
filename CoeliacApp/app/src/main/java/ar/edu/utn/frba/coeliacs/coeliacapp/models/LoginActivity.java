@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.coeliacs.coeliacapp;
+package ar.edu.utn.frba.coeliacs.coeliacapp.models;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class LoginActivity extends AppCompatActivity {
+import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 
+public class LoginActivity extends AppCompatActivity {
+    public final static String EXTRA_MESSAGE = "ar.edu.utn.frba.coeliacs.coeliacapp.MESSAGE";
     private Button loginButton;
 
     @Override
@@ -21,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 Bundle b = new Bundle();
-                b.putString("TEST", "Test text");
+                b.putString(EXTRA_MESSAGE, "Test text");
                 intent.putExtras(b);
                 startActivity(intent);
             }
