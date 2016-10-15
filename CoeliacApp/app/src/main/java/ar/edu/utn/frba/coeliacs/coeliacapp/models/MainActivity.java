@@ -1,8 +1,8 @@
 package ar.edu.utn.frba.coeliacs.coeliacapp.models;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -86,6 +86,26 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        /*
+        ==============================================
+        = Ejemplo de como usar webservices
+        ==============================================
+
+        WebServicesEntryPoint.getShopsByRadius(-34.5442824021754, -58.5560560226441, 5, new WebServiceCallback<List<Shop>>() {
+            @Override
+            public void onFinished(WebServiceResponse<List<Shop>> webServiceResponse) {
+                String logTag = "COELIAC";
+                if (webServiceResponse.getEx() != null) {
+                    Log.d(logTag, webServiceResponse.getEx().toString());
+                } else {
+                    for (Shop s : webServiceResponse.getBodyAsObject()) {
+                        Log.d(logTag, s.toString());
+                    }
+                }
+            }
+        });
+        */
 
     }
 }
