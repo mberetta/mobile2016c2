@@ -3,10 +3,12 @@ package ar.edu.utn.frba.coeliacs.coeliacapp.domain;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serializable;
+
 /**
  * Created by mberetta on 14/10/2016.
  */
-public class Entity {
+public class Entity implements Serializable {
 
     private String _id;
 

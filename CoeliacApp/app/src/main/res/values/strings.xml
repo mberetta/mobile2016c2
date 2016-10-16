@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CoeliacApp</string>
+    <string name="error_webservice">Error al consultar servidor.</string>
 </resources>
