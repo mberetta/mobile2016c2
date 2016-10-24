@@ -3,6 +3,8 @@
     package="ar.edu.utn.frba.coeliacs.coeliacapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -21,7 +23,13 @@
         <activity android:name=".models.MapActivity" />
         <activity android:name=".models.CodeBarReaderActivity" />
         <activity android:name=".models.SearchActivity" />
-        <activity android:name=".models.DiscountsActivity"></activity>
+        <activity android:name=".models.DiscountsActivity" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBPlF9QyQi41AN-Qa6QNMLj32rlIIb_JX4" />
     </application>
 
 </manifest>

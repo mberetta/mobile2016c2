@@ -6,18 +6,18 @@ package ar.edu.utn.frba.coeliacs.coeliacapp.domain;
 public class CoordinatesLocation extends Location {
 
     private String type;
-    private double[] latlong;
+    private double[] coordinates;
 
     public String getType() {
         return type;
     }
 
     public double getLong() {
-        return latlong[0];
+        return coordinates[0];
     }
 
     public double getLat() {
-        return latlong[1];
+        return coordinates[1];
     }
 
 }
