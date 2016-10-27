@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">CoeliacApp</string>
     <string name="error_webservice">Error al consultar servidor.</string>
+
+
+    <!-- SEARCH ACTIVITY -->
+    <string name="searchProductsButtonText">Productos</string>
+    <string name="searchShopsButtonText">Comercios</string>
 </resources>
