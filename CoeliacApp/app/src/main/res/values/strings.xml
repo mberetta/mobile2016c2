@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">CoeliacApp</string>
     <string name="error_webservice">Error al consultar servidor.</string>
+    <string name="title_near_discounts">Descuentos cercanos</string>
 </resources>
