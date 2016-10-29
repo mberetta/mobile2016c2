@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
+import ar.edu.utn.frba.coeliacs.coeliacapp.models.discounts.DiscountsActivity;
 
 public class MainActivity extends AppCompatActivity {
 
