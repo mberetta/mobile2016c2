@@ -1,9 +1,11 @@
-package ar.edu.utn.frba.coeliacs.coeliacapp.models;
+package ar.edu.utn.frba.coeliacs.coeliacapp.models.discounts;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,9 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServicesEntryPoint;
 
 public class DiscountsActivity extends AppCompatActivity {
 
+    private static final String DISCOUNTS_TAG = "DISCOUNTS";
     private ListView discountsListView;
+    private ArrayList<DiscountIconArrayAdapterModel> discounts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +32,22 @@ public class DiscountsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_discounts);
         setTitle(R.string.title_near_discounts);
 
-        // TODO reload previous state
+        discountsListView = (ListView) findViewById(R.id.discounts_list_view);
+        discountsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // TODO hacer algo
+                Toast.makeText(DiscountsActivity.this, "Click!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        if (savedInstanceState != null) {
+            discounts = (ArrayList<DiscountIconArrayAdapterModel>) savedInstanceState.getSerializable(DISCOUNTS_TAG);
+            if (discounts != null) {
+                updateUI();
+                return;
+            }
+        }
 
         // TODO get current position
         double currentLat = -34.5442824021754;
@@ -36,6 +55,7 @@ public class DiscountsActivity extends AppCompatActivity {
         // TODO get radius from user config
         int radiusKm = 200;
 
+        // TODO lazy loading?
         // TODO recycled view?
 
         WebServicesEntryPoint.getShopsByRadius(currentLat, currentLong, radiusKm, new WebServiceCallback<List<Shop>>() {
@@ -44,16 +64,26 @@ public class DiscountsActivity extends AppCompatActivity {
                 if (webServiceResponse.getEx() != null) {
                     ErrorHandling.showWebServiceError(DiscountsActivity.this);
                 } else {
-                    discountsListView = (ListView) findViewById(R.id.discounts_list_view);
-                    List<IconArrayAdapterModelImpl> discounts = new ArrayList<IconArrayAdapterModelImpl>();
+                    discounts = new ArrayList<DiscountIconArrayAdapterModel>();
                     for (Shop shop : webServiceResponse.getBodyAsObject()) {
                         for (Discount discount : shop.getDiscounts()) {
-                            discounts.add(new IconArrayAdapterModelImpl(discount.getDescription(), shop.getName(), R.drawable.discount));
+                            discounts.add(new DiscountIconArrayAdapterModel(discount, shop));
                         }
                     }
-                    discountsListView.setAdapter(new IconArrayAdapter<IconArrayAdapterModelImpl>(DiscountsActivity.this, discounts));
+                    updateUI();
                 }
             }
         });
+
+    }
+
+    private void updateUI() {
+        discountsListView.setAdapter(new IconArrayAdapter<DiscountIconArrayAdapterModel>(DiscountsActivity.this, discounts));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(DISCOUNTS_TAG, discounts);
+        super.onSaveInstanceState(outState);
     }
 }
