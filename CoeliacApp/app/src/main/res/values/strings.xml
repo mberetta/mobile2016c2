@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">CoeliacApp</string>
     <string name="error_webservice">Error al consultar servidor.</string>
-
+    <string name="error_location">Error al obtener ubicación.</string>
+    <string name="title_near_discounts">Descuentos cercanos</string>
 
     <!-- SEARCH ACTIVITY -->
     <string name="searchProductsButtonText">Productos</string>

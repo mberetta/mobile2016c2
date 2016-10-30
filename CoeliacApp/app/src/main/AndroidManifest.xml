@@ -3,6 +3,7 @@
     package="ar.edu.utn.frba.coeliacs.coeliacapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -21,9 +22,9 @@
         <activity android:name=".models.MapActivity" />
         <activity android:name=".models.CodeBarReaderActivity" />
         <activity android:name=".models.SearchActivity" />
-        <activity android:name=".models.DiscountsActivity" />
         <activity android:name=".models.SearchDetailsActivity" />
         <activity android:name=".models.SearchListActivity"></activity>
+        <activity android:name=".models.discounts.DiscountsActivity"></activity>
     </application>
 
 </manifest>
