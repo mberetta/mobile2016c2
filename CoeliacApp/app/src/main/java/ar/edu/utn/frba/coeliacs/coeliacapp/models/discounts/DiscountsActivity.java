@@ -1,10 +1,15 @@
 package ar.edu.utn.frba.coeliacs.coeliacapp.models.discounts;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -15,6 +20,7 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Discount;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
 import ar.edu.utn.frba.coeliacs.coeliacapp.location.LocationProvider;
+import ar.edu.utn.frba.coeliacs.coeliacapp.models.SearchActivity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapter;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapterModelImpl;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceCallback;
@@ -26,6 +32,7 @@ public class DiscountsActivity extends AppCompatActivity {
     private static final String DISCOUNTS_TAG = "DISCOUNTS";
     private ListView discountsListView;
     private ArrayList<DiscountIconArrayAdapterModel> discounts;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +40,17 @@ public class DiscountsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_discounts);
         setTitle(R.string.title_near_discounts);
 
+        progressBar = (ProgressBar) findViewById(R.id.progress_discounts);
+        progressBar.setVisibility(View.VISIBLE);
+
         discountsListView = (ListView) findViewById(R.id.discounts_list_view);
+        discountsListView.setVisibility(View.GONE);
         discountsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // TODO hacer algo
-                Toast.makeText(DiscountsActivity.this, "Click!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(DiscountsActivity.this, ViewDiscountActivity.class);
+                intent.putExtra(ViewDiscountActivity.EXTRA_DISCOUNT, discounts.get(position));
+                startActivity(intent);
             }
         });
 
@@ -63,6 +75,7 @@ public class DiscountsActivity extends AppCompatActivity {
                     @Override
                     public void onFinished(WebServiceResponse<List<Shop>> webServiceResponse) {
                         if (webServiceResponse.getEx() != null) {
+                            finish();
                             ErrorHandling.showWebServiceError(DiscountsActivity.this);
                         } else {
                             discounts = new ArrayList<DiscountIconArrayAdapterModel>();
@@ -79,6 +92,7 @@ public class DiscountsActivity extends AppCompatActivity {
 
             @Override
             public void onError() {
+                finish();
                 ErrorHandling.showLocationError(DiscountsActivity.this);
             }
         };
@@ -86,7 +100,27 @@ public class DiscountsActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
+        progressBar.setVisibility(View.GONE);
+        discountsListView.setVisibility(View.VISIBLE);
         discountsListView.setAdapter(new IconArrayAdapter<DiscountIconArrayAdapterModel>(DiscountsActivity.this, discounts));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.discount_filters:
+                // TODO hacer algo
+                Toast.makeText(this, "Click!", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.discounts, menu);
+        return true;
     }
 
     @Override

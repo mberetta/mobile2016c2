@@ -3,4 +3,9 @@
     <string name="error_webservice">Error al consultar servidor.</string>
     <string name="error_location">Error al obtener ubicación.</string>
     <string name="title_near_discounts">Descuentos cercanos</string>
+    <string name="filters">Filtrar</string>
+    <string name="title_view_discount">Ver descuento</string>
+    <string name="shop">Comercio</string>
+    <string name="product">Productos</string>
+    <string name="details">Detalles</string>
 </resources>
