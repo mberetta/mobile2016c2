@@ -12,4 +12,8 @@ public class ErrorHandling {
         Toast.makeText(context, R.string.error_webservice, Toast.LENGTH_LONG).show();
     }
 
+    public static void showLocationError(Context context) {
+        Toast.makeText(context, R.string.error_location, Toast.LENGTH_LONG).show();
+    }
+
 }

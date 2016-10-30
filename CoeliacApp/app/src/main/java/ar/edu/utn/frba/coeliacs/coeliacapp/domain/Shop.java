@@ -1,5 +1,7 @@
 package ar.edu.utn.frba.coeliacs.coeliacapp.domain;
 
+import java.util.List;
+
 /**
  * Created by mberetta on 14/10/2016.
  */
@@ -10,6 +12,7 @@ public class Shop extends Entity {
     private String address;
     private Boolean exclusive;
     private CoordinatesLocation location;
+    private List<Discount> discounts;
 
     public String getName() {
         return name;
@@ -29,6 +32,10 @@ public class Shop extends Entity {
 
     public CoordinatesLocation getLocation() {
         return location;
+    }
+
+    public List<Discount> getDiscounts() {
+        return discounts;
     }
 
     @Override
