@@ -14,6 +14,7 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.ErrorHandling;
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Discount;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
+import ar.edu.utn.frba.coeliacs.coeliacapp.location.LocationProvider;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapter;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapterModelImpl;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceCallback;
@@ -49,31 +50,38 @@ public class DiscountsActivity extends AppCompatActivity {
             }
         }
 
-        // TODO get current position
-        double currentLat = -34.5442824021754;
-        double currentLong = -58.5560560226441;
-        // TODO get radius from user config
-        int radiusKm = 200;
-
-        // TODO lazy loading?
-        // TODO recycled view?
-
-        WebServicesEntryPoint.getShopsByRadius(currentLat, currentLong, radiusKm, new WebServiceCallback<List<Shop>>() {
+        new LocationProvider(this) {
             @Override
-            public void onFinished(WebServiceResponse<List<Shop>> webServiceResponse) {
-                if (webServiceResponse.getEx() != null) {
-                    ErrorHandling.showWebServiceError(DiscountsActivity.this);
-                } else {
-                    discounts = new ArrayList<DiscountIconArrayAdapterModel>();
-                    for (Shop shop : webServiceResponse.getBodyAsObject()) {
-                        for (Discount discount : shop.getDiscounts()) {
-                            discounts.add(new DiscountIconArrayAdapterModel(discount, shop));
+            public void onLastKnownLocationAvailable(double latitude, double longitude) {
+                // TODO get radius from user config
+                int radiusKm = 200;
+
+                // TODO lazy loading?
+                // TODO recycled view?
+
+                WebServicesEntryPoint.getShopsByRadius(latitude, longitude, radiusKm, new WebServiceCallback<List<Shop>>() {
+                    @Override
+                    public void onFinished(WebServiceResponse<List<Shop>> webServiceResponse) {
+                        if (webServiceResponse.getEx() != null) {
+                            ErrorHandling.showWebServiceError(DiscountsActivity.this);
+                        } else {
+                            discounts = new ArrayList<DiscountIconArrayAdapterModel>();
+                            for (Shop shop : webServiceResponse.getBodyAsObject()) {
+                                for (Discount discount : shop.getDiscounts()) {
+                                    discounts.add(new DiscountIconArrayAdapterModel(discount, shop));
+                                }
+                            }
+                            updateUI();
                         }
                     }
-                    updateUI();
-                }
+                });
             }
-        });
+
+            @Override
+            public void onError() {
+                ErrorHandling.showLocationError(DiscountsActivity.this);
+            }
+        };
 
     }
 
@@ -83,7 +91,9 @@ public class DiscountsActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        // TODO debug exception "java.lang.RuntimeException: Parcel: unable to marshal value ar.edu.utn.frba.coeliacs.coeliacapp.models.discounts.DiscountIconArrayAdapterModel@3e8a047" when hiding activity
         outState.putSerializable(DISCOUNTS_TAG, discounts);
         super.onSaveInstanceState(outState);
     }
+
 }
