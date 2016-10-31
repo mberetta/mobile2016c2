@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.coeliacs.coeliacapp.models;
+package ar.edu.utn.frba.coeliacs.coeliacapp.models.search;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
+import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Product;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -31,7 +32,7 @@ public class SearchActivity extends AppCompatActivity {
         productsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SearchActivity.this, SearchDetailsActivity.class);
+                Intent intent = new Intent(SearchActivity.this, SearchListActivity.class);
                 //PASS BUNDLE IF ARGUMENTS NEEDED
                 Bundle b = new Bundle();
                 b.putString(EXTRA_ITEM_TYPE, EXTRA_ITEM_TYPE_PRODUCT);
@@ -43,7 +44,7 @@ public class SearchActivity extends AppCompatActivity {
         shopsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SearchActivity.this, SearchDetailsActivity.class);
+                Intent intent = new Intent(SearchActivity.this, SearchListActivity.class);
                 //PASS BUNDLE IF ARGUMENTS NEEDED
                 Bundle b = new Bundle();
                 b.putString(EXTRA_ITEM_TYPE, EXTRA_ITEM_TYPE_SHOP);

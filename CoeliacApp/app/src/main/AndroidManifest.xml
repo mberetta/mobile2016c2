@@ -21,9 +21,9 @@
         <activity android:name=".models.MainActivity" />
         <activity android:name=".models.MapActivity" />
         <activity android:name=".models.CodeBarReaderActivity" />
-        <activity android:name=".models.SearchActivity" />
-        <activity android:name=".models.SearchDetailsActivity" />
-        <activity android:name=".models.SearchListActivity"></activity>
+        <activity android:name=".models.search.SearchActivity" />
+        <activity android:name=".models.search.SearchDetailsActivity" />
+        <activity android:name=".models.search.SearchListActivity"></activity>
         <activity android:name=".models.discounts.DiscountsActivity"></activity>
     </application>
 
