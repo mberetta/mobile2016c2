@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.coeliacs.coeliacapp.fragment;
+package ar.edu.utn.frba.coeliacs.coeliacapp.models.map.fragment;
 
 import com.google.android.gms.maps.model.Marker;
 

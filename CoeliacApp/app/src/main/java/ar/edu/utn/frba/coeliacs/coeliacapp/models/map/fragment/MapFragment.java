@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.coeliacs.coeliacapp.fragment;
+package ar.edu.utn.frba.coeliacs.coeliacapp.models.map.fragment;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -24,6 +24,16 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     private GoogleMap map;
     private List<ShopMarker> markers = new ArrayList<>();
 
+    public interface MapFragmentListener {
+
+        void mapReady();
+    }
+    @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        this.getMapAsync(this);
+    }
+
     public void setMarkers(List<Shop> shops) {
         map.clear();
         markers.clear();
@@ -46,21 +56,11 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         }
     }
 
-    public interface MapFragmentListener {
-        void onChangeLocation();
-    }
-
-    @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        this.getMapAsync(this);
-    }
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.setMyLocationEnabled(true);
-        ((MapFragmentListener) this.getActivity()).onChangeLocation();
+        ((MapFragmentListener) this.getActivity()).mapReady();
     }
 
     public void changeLocation(Location location) {
