@@ -1,38 +1,70 @@
 package ar.edu.utn.frba.coeliacs.coeliacapp.models.map;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 
+import javax.xml.datatype.Duration;
+
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static android.support.v4.content.ContextCompat.checkSelfPermission;
+import static com.google.android.gms.common.api.CommonStatusCodes.RESOLUTION_REQUIRED;
+import static com.google.android.gms.common.api.CommonStatusCodes.SUCCESS;
 import static com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY;
 import static com.google.android.gms.location.LocationServices.FusedLocationApi;
+import static com.google.android.gms.location.LocationServices.SettingsApi;
+import static com.google.android.gms.location.LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE;
 
 public class MapLocationProvider implements LocationListener, ConnectionCallbacks, OnConnectionFailedListener {
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        try {
+            connectionResult.startResolutionForResult((AppCompatActivity) context, 9000);
+            Toast.makeText(context, "Cannot connect with Location Services", Toast.LENGTH_SHORT);
+        } catch (IntentSender.SendIntentException e) {
+            Log.i("Connection error", "onConnectionFailed: Cannot connect to location services");
+        }
     }
 
     public interface MapLocationProviderListener {
-        public void changeLocation(Location location);
+        void changeLocation(Location location);
     }
 
     private GoogleApiClient googleApiClient;
     private MapLocationProviderListener listener;
+    private Context context;
+    private LocationRequest locationRequest;
 
-    public MapLocationProvider(Context context, MapLocationProviderListener _listener) {
+    public MapLocationProvider(Context _context, MapLocationProviderListener _listener) {
         listener = _listener;
+        context = _context;
 
         googleApiClient = new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)
@@ -43,14 +75,45 @@ public class MapLocationProvider implements LocationListener, ConnectionCallback
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        if (checkSelfPermission(context, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED && checkSelfPermission(context, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
+            Toast.makeText(context, "Cannot get location", Toast.LENGTH_SHORT);
+            return;
+        }
+
         updateLocationRequest();
 
-        Location location = FusedLocationApi.getLastLocation(googleApiClient);
-        listener.changeLocation(location);
+        PendingResult<LocationSettingsResult> settingsResult = SettingsApi.checkLocationSettings(googleApiClient, new LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build());
+        settingsResult.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(LocationSettingsResult result) {
+                final Status status = result.getStatus();
+                switch (status.getStatusCode()) {
+                    case SUCCESS:
+                        Location location = FusedLocationApi.getLastLocation(googleApiClient);
+                        listener.changeLocation(location);
+                        break;
+                    case RESOLUTION_REQUIRED:
+                        try {
+                            status.startResolutionForResult((AppCompatActivity)context,1000);
+
+                        } catch (IntentSender.SendIntentException e) {
+                            // Ignore the error.
+                        }
+                        break;
+                    case SETTINGS_CHANGE_UNAVAILABLE:
+                        break;
+                }
+            }
+        });
+
     }
 
     private void updateLocationRequest() {
-        LocationRequest locationRequest = new LocationRequest();
+        if (checkSelfPermission(context, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED && checkSelfPermission(context, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
+            return;
+        }
+
+        locationRequest = new LocationRequest();
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(PRIORITY_HIGH_ACCURACY);
@@ -68,6 +131,9 @@ public class MapLocationProvider implements LocationListener, ConnectionCallback
     }
 
     public Location currentLocation() {
+        if (checkSelfPermission(context, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED && checkSelfPermission(context, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
+            return null;
+        }
         return FusedLocationApi.getLastLocation(googleApiClient);
     }
 

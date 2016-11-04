@@ -24,6 +24,7 @@
         <activity android:name=".models.CodeBarReaderActivity" />
         <activity android:name=".models.SearchActivity" />
         <activity android:name=".models.discounts.DiscountsActivity" />
+        <activity android:name=".models.map.fragment.MapSettingsActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -31,6 +32,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBPlF9QyQi41AN-Qa6QNMLj32rlIIb_JX4" />
+
     </application>
 
 </manifest>
