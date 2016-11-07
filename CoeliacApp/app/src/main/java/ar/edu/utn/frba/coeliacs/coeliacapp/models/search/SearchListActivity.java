@@ -1,8 +1,11 @@
 package ar.edu.utn.frba.coeliacs.coeliacapp.models.search;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -10,7 +13,6 @@ import java.util.List;
 
 import ar.edu.utn.frba.coeliacs.coeliacapp.ErrorHandling;
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
-import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Entity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Product;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapter;
@@ -25,8 +27,10 @@ public class SearchListActivity extends AppCompatActivity {
     public final static String EXTRA_ITEM_TYPE_PRODUCT = "ar.edu.utn.frba.coeliacs.coeliacapp.ITEM_TYPE_PRODUCT";
     public final static String EXTRA_ITEM_TYPE_SHOP = "ar.edu.utn.frba.coeliacs.coeliacapp.ITEM_TYPE_SHOP";
 
-    private ListView itemsList;
+    private ListView itemsListView;
+    private EditText searchBoxView;
     private ArrayList<SearchIconArrayAdapterModel> listItems; //used to store products or shops from web services
+    private ArrayAdapter<SearchIconArrayAdapterModel> adapter;
 
 
     @Override
@@ -34,7 +38,8 @@ public class SearchListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_list);
 
-        itemsList = (ListView) findViewById(R.id.itemsList);
+        itemsListView = (ListView) findViewById(R.id.itemsList);
+        searchBoxView = (EditText)  findViewById(R.id.searchBox);
 
         //Recuperamos la información pasada en el intent
         Bundle bundle = this.getIntent().getExtras();
@@ -64,7 +69,8 @@ public class SearchListActivity extends AppCompatActivity {
                     for (Product product : webServiceResponse.getBodyAsObject()) {
                         listItems.add(new SearchIconArrayAdapterModel<Product>(product));
                     }
-                    updateUI();
+                    setAdapter();
+                    enableSearchBox();
                 }
             }
         });
@@ -81,13 +87,32 @@ public class SearchListActivity extends AppCompatActivity {
                     for (Shop shop : webServiceResponse.getBodyAsObject()) {
                         listItems.add(new SearchIconArrayAdapterModel<Shop>(shop));
                     }
-                    updateUI();
+                    setAdapter();
+                    enableSearchBox();
                 }
             }
         });
     }
 
-    private void updateUI(){
-        itemsList.setAdapter(new IconArrayAdapter<SearchIconArrayAdapterModel>(SearchListActivity.this, listItems));
+    private void setAdapter(){
+        adapter = new IconArrayAdapter<SearchIconArrayAdapterModel>(SearchListActivity.this, listItems);
+        itemsListView.setAdapter(adapter);
+    }
+
+    private void enableSearchBox() {
+        searchBoxView.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                // When user changed the Text
+                SearchListActivity.this.adapter.getFilter().filter(cs);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
+
+            @Override
+            public void afterTextChanged(Editable arg0) {}
+        });
     }
 }
