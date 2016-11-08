@@ -10,6 +10,8 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.otto.Bus;
+
 import java.text.Collator;
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -18,6 +20,8 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
+import ar.edu.utn.frba.coeliacs.coeliacapp.communication.BusProvider;
+import ar.edu.utn.frba.coeliacs.coeliacapp.communication.ItemSelectedEvent;
 import ar.edu.utn.frba.coeliacs.coeliacapp.utils.TextUtils;
 
 /**
@@ -25,6 +29,7 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.utils.TextUtils;
  */
 public class IconArrayAdapter<T extends IconArrayAdapterModel> extends ArrayAdapter<T> {
     private static final String TAG = IconArrayAdapter.class.getSimpleName();
+    final private Bus bus = BusProvider.getInstance();
 
     private Context context;
     private List<T> objects;
@@ -45,10 +50,16 @@ public class IconArrayAdapter<T extends IconArrayAdapterModel> extends ArrayAdap
         TextView subtitleTextView = (TextView) rowView.findViewById(R.id.subtitleTextView);
         ImageView iconImageView = (ImageView) rowView.findViewById(R.id.iconImageView);
         Log.d(TAG, "getView - size:" + objects.size() + " position:" + String.valueOf(position));
-        T object = filteredObjects.get(position);
+        final T object = filteredObjects.get(position);
         titleTextView.setText(object.getTitle());
         subtitleTextView.setText(object.getSubtitle());
         iconImageView.setImageResource(object.getIconResId());
+        rowView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bus.post(new ItemSelectedEvent(object));
+            }
+        });
         return rowView;
     }
 

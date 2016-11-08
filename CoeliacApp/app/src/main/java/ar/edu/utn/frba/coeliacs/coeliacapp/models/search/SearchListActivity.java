@@ -1,18 +1,25 @@
 package ar.edu.utn.frba.coeliacs.coeliacapp.models.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.utn.frba.coeliacs.coeliacapp.ErrorHandling;
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
+import ar.edu.utn.frba.coeliacs.coeliacapp.communication.BusProvider;
+import ar.edu.utn.frba.coeliacs.coeliacapp.communication.ItemSelectedEvent;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Product;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapter;
@@ -21,11 +28,14 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceResponse;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServicesEntryPoint;
 
 public class SearchListActivity extends AppCompatActivity {
+    private static final String TAG = SearchListActivity.class.getSimpleName();
 
     //DEFINIR ESTOS STRINGS DE MANERA GLOBAL. DONDE SERIA MEJOR???
     public final static String EXTRA_ITEM_TYPE = "ar.edu.utn.frba.coeliacs.coeliacapp.ITEM_TYPE";
     public final static String EXTRA_ITEM_TYPE_PRODUCT = "ar.edu.utn.frba.coeliacs.coeliacapp.ITEM_TYPE_PRODUCT";
     public final static String EXTRA_ITEM_TYPE_SHOP = "ar.edu.utn.frba.coeliacs.coeliacapp.ITEM_TYPE_SHOP";
+
+    private Bus bus = BusProvider.getInstance();
 
     private ListView itemsListView;
     private EditText searchBoxView;
@@ -36,6 +46,9 @@ public class SearchListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        bus.register(this);
+
         setContentView(R.layout.activity_search_list);
 
         itemsListView = (ListView) findViewById(R.id.itemsList);
@@ -114,5 +127,23 @@ public class SearchListActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable arg0) {}
         });
+    }
+
+    @Subscribe
+    public void onItemSelectedEvent(ItemSelectedEvent e) {
+        Log.i(TAG, "ItemSelectedEvent with id: " + e.getItem().get_id());
+        Intent intent = new Intent(this, ProductDetailsActivity.class);
+        Bundle b = new Bundle();
+        b.putString("ITEM_ID", e.getItem().get_id());
+        b.putString("TITLE", e.getItem().getTitle());
+        b.putString("SUBTITLE", e.getItem().getSubtitle());
+        intent.putExtras(b);
+        startActivity(intent);
+    }
+
+
+
+    public void onDestroy() {
+        bus.unregister(this);
     }
 }

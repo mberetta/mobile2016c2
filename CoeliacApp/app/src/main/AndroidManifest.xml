@@ -22,7 +22,7 @@
         <activity android:name=".models.MapActivity" />
         <activity android:name=".models.CodeBarReaderActivity" />
         <activity android:name=".models.search.SearchActivity" />
-        <activity android:name=".models.search.SearchDetailsActivity" />
+        <activity android:name=".models.search.ProductDetailsActivity" />
         <activity android:name=".models.search.SearchListActivity"></activity>
         <activity android:name=".models.discounts.DiscountsActivity"></activity>
     </application>

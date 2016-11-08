@@ -15,6 +15,20 @@ public class SearchIconArrayAdapterModel<T> extends IconArrayAdapterModelImpl<T>
     }
 
     @Override
+    public String get_id() {
+        T listItem = getObject();
+        String result = "No id";
+
+        if (listItem instanceof Product){
+            result = ((Product) listItem).get_id();
+        }else if(listItem instanceof Shop){
+            result = ((Shop) listItem).get_id();
+        }
+
+        return result;
+    }
+
+    @Override
     public String getTitle() {
         T listItem = getObject();
         String result = "No Name";
