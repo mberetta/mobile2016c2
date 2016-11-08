@@ -11,14 +11,14 @@
     tools:context=".models.search.SearchListActivity">
 
     <EditText
-        android:id="@+id/searchBox"
+        android:id="@+id/productSearchBox"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:maxLines="1"
         android:maxLength="50"
         tools:text="SearchQuery"/>
 
-    <ListView android:id="@+id/itemsList"
+    <ListView android:id="@+id/productList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".models.search.ProductDetailsActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/shopTitleView"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Titulo del producto"
+        android:layout_marginBottom="16dp"
+        android:textSize="30sp"/>
+
+    <TextView
+        android:id="@+id/shopSubtitleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Av del zorzal 4545"
+        android:layout_marginBottom="32dp"
+        android:textSize="20sp"/>
+
+    <ListView android:id="@+id/productsYouCanBuyHereListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

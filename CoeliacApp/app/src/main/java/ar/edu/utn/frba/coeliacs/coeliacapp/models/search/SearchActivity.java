@@ -32,11 +32,7 @@ public class SearchActivity extends AppCompatActivity {
         productsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SearchActivity.this, SearchListActivity.class);
-                //PASS BUNDLE IF ARGUMENTS NEEDED
-                Bundle b = new Bundle();
-                b.putString(EXTRA_ITEM_TYPE, EXTRA_ITEM_TYPE_PRODUCT);
-                intent.putExtras(b);
+                Intent intent = new Intent(SearchActivity.this, ProductListActivity.class);
                 startActivity(intent);
             }
         });
@@ -44,11 +40,7 @@ public class SearchActivity extends AppCompatActivity {
         shopsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SearchActivity.this, SearchListActivity.class);
-                //PASS BUNDLE IF ARGUMENTS NEEDED
-                Bundle b = new Bundle();
-                b.putString(EXTRA_ITEM_TYPE, EXTRA_ITEM_TYPE_SHOP);
-                intent.putExtras(b);
+                Intent intent = new Intent(SearchActivity.this, ShopListActivity.class);
                 startActivity(intent);
             }
         });
