@@ -144,6 +144,7 @@ public class SearchListActivity extends AppCompatActivity {
 
 
     public void onDestroy() {
+        super.onDestroy();
         bus.unregister(this);
     }
 }
