@@ -7,23 +7,31 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import ar.edu.utn.frba.coeliacs.coeliacapp.ErrorHandling;
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
+import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Product;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
+import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceCallback;
+import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceResponse;
+import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServicesEntryPoint;
 
 /**
  * Created by max on 8/11/2016.
  */
 
 public class ShopDetailsActivity extends AppCompatActivity {
+    //UI
     private ListView productListView;
-    private ArrayAdapter<SearchIconArrayAdapterModel> adapter;
+    private ProductAdapter adapter;
     private TextView nameView;
     private TextView addressView;
     private TextView phoneView;
 
+    //Internal Data
     private Shop shop;
-    private ArrayList<SearchIconArrayAdapterModel> listItems;
+    private List<Product> products;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +47,23 @@ public class ShopDetailsActivity extends AppCompatActivity {
         phoneView.setText(shop.getTelnum());
         addressView.setText(shop.getAddress());
 
-        //fillListWithShops();
+        fillListWithProducts();
     }
+
+    private void fillListWithProducts(){
+        WebServicesEntryPoint.getProductsSoldByShop(shop, new WebServiceCallback<List<Product>>() {
+            @Override
+            public void onFinished(WebServiceResponse<List<Product>> webServiceResponse) {
+                if (webServiceResponse.getEx() != null) {
+                    ErrorHandling.showWebServiceError(ShopDetailsActivity.this);
+                } else {
+                    products = webServiceResponse.getBodyAsObject();
+                    adapter = new ProductAdapter(ShopDetailsActivity.this, products);
+                    productListView.setAdapter(adapter);
+                }
+            }
+        });
+    }
+
+
 }

@@ -11,7 +11,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/shopTitleView"
+        android:id="@+id/shopNameView"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,12 +20,28 @@
         android:textSize="30sp"/>
 
     <TextView
-        android:id="@+id/shopSubtitleView"
+        android:id="@+id/shopAddressView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Av del zorzal 4545"
+        android:layout_marginBottom="16dp"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/shopPhoneView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Av del zorzal 4545"
         android:layout_marginBottom="32dp"
         android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/whereToBuyLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aqui podras encontrar los siguientes productos:"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"/>
 
     <ListView android:id="@+id/productsYouCanBuyHereListView"
         android:layout_width="match_parent"
