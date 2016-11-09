@@ -34,6 +34,7 @@ public class NoScrollIconListView extends LinearLayout {
     }
 
     public void setItems(List<IconArrayAdapterModel> items) {
+        setOrientation(LinearLayout.VERTICAL);
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         for (IconArrayAdapterModel item : items) {
             View rowView = layoutInflater.inflate(R.layout.icon_array_adapter, null);

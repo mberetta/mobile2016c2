@@ -106,24 +106,6 @@ public class DiscountsActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.discount_filters:
-                // TODO hacer algo
-                Toast.makeText(this, "Click!", Toast.LENGTH_SHORT).show();
-                break;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.discounts, menu);
-        return true;
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         // TODO debug exception "java.lang.RuntimeException: Parcel: unable to marshal value ar.edu.utn.frba.coeliacs.coeliacapp.models.discounts.DiscountIconArrayAdapterModel@3e8a047" when hiding activity
         outState.putSerializable(DISCOUNTS_TAG, discounts);

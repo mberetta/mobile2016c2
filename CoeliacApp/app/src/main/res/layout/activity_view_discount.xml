@@ -19,38 +19,94 @@
             android:layout_width="wrap_content"
             android:text="@string/shop"
             android:textStyle="bold"
-            android:layout_margin="10dp"/>
+            android:layout_marginBottom="16dp"/>
 
+        <!--
         <ar.edu.utn.frba.coeliacs.coeliacapp.models.components.NoScrollIconListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/shop_container"/>
+        -->
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/shop_container"
-            android:orientation="vertical"/>
+            android:scrollbars="none"/>
 
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="@string/product"
             android:textStyle="bold"
-            android:layout_margin="10dp"/>
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
 
+        <!--
         <ar.edu.utn.frba.coeliacs.coeliacapp.models.components.NoScrollIconListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/product_list"/>
+        -->
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/product_list"
-            android:orientation="vertical"/>
+            android:scrollbars="none"/>
 
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="@string/details"
             android:textStyle="bold"
-            android:layout_margin="10dp"/>
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
 
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="EJEMPLO"/>
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="8dp"
+            android:textStyle="bold"
+            android:text="@string/description"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/description"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Ejemplo"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="8dp"
+            android:textStyle="bold"
+            android:text="@string/termsAndConditions"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/terms_conditions"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Ejemplo"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="8dp"
+            android:textStyle="bold"
+            android:text="@string/availableQuantity"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:id="@+id/available_quantity"
+            android:text="Ejemplo"/>
 
     </LinearLayout>
 
