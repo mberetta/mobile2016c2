@@ -15,6 +15,7 @@ import java.util.List;
 
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Discount;
+import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Product;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapter;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapterModel;
@@ -60,7 +61,7 @@ public class ViewDiscountActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ViewDiscountActivity.this, null); // TODO set view shop activity class
-                intent.putExtra(ViewDiscountActivity.EXTRA_SHOP, shop.get(position));
+                intent.putExtra(ViewDiscountActivity.EXTRA_SHOP, ((IconArrayAdapterModelImpl<Shop>)shop.get(position)).getObject());
                 startActivity(intent);
             }
         });
@@ -69,7 +70,7 @@ public class ViewDiscountActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ViewDiscountActivity.this, null); // TODO set view product activity class
-                intent.putExtra(ViewDiscountActivity.EXTRA_PRODUCT, products.get(position));
+                intent.putExtra(ViewDiscountActivity.EXTRA_PRODUCT, ((IconArrayAdapterModelImpl<Product>)products.get(position)).getObject());
                 startActivity(intent);
             }
         });
@@ -90,8 +91,6 @@ public class ViewDiscountActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        // TODO both shops and products list are fixed and not loaded from webservices
-
         shop = new ArrayList<IconArrayAdapterModel>();
         shop.add(new IconArrayAdapterModelImpl<Shop>(discountModel.getOwnerShop()) {
             @Override
@@ -112,13 +111,34 @@ public class ViewDiscountActivity extends AppCompatActivity {
         //shopContainer.setItems(shop);
         shopContainer.setAdapter(new IconArrayAdapter<IconArrayAdapterModel>(this, shop));
 
+        // TODO this list is hardcoded and not loaded from webservice
         products = new ArrayList<IconArrayAdapterModel>();
-        products.add(discountModel);
-        products.add(discountModel);
-        products.add(discountModel);
-        products.add(discountModel);
-        products.add(discountModel);
-        products.add(discountModel);
+
+        Product hardcodedProduct = new Product();
+        hardcodedProduct.set_id("RJ45");
+        hardcodedProduct.setName("Barra de cereal para celíaco");
+
+        IconArrayAdapterModelImpl<Product> productModel = new IconArrayAdapterModelImpl<Product>(hardcodedProduct) {
+            @Override
+            public String getTitle() {
+                return getObject().getName();
+            }
+            @Override
+            public String getSubtitle() {
+                return "Producto";
+            }
+            @Override
+            public int getIconResId() {
+                return R.drawable.product;
+            }
+        };
+
+        products.add(productModel);
+        products.add(productModel);
+        products.add(productModel);
+        products.add(productModel);
+        products.add(productModel);
+        products.add(productModel);
         //productsList.setItems(products);
         productsList.setAdapter(new IconArrayAdapter<IconArrayAdapterModel>(this, products));
 

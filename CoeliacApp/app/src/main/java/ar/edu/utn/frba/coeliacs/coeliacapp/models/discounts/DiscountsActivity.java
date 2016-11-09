@@ -107,7 +107,6 @@ public class DiscountsActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        // TODO debug exception "java.lang.RuntimeException: Parcel: unable to marshal value ar.edu.utn.frba.coeliacs.coeliacapp.models.discounts.DiscountIconArrayAdapterModel@3e8a047" when hiding activity
         outState.putSerializable(DISCOUNTS_TAG, discounts);
         super.onSaveInstanceState(outState);
     }

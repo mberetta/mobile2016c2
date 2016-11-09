@@ -31,13 +31,13 @@ public class CodeBarReaderActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        finish();
-
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (scanResult != null && scanResult.getContents() != null) {
             WebServicesEntryPoint.getProductByBarcode(scanResult.getContents(), new WebServiceCallback<Product>() {
                 @Override
                 public void onFinished(WebServiceResponse<Product> webServiceResponse) {
+                    finish();
+
                     if (webServiceResponse.getEx() != null) {
                         ErrorHandling.showWebServiceError(CodeBarReaderActivity.this);
                     } else {
