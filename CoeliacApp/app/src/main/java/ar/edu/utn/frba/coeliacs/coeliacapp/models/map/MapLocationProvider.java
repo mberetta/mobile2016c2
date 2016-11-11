@@ -1,14 +1,11 @@
 package ar.edu.utn.frba.coeliacs.coeliacapp.models.map;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.IntentSender;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -25,10 +22,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStates;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
-
-import javax.xml.datatype.Duration;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -94,7 +87,7 @@ public class MapLocationProvider implements LocationListener, ConnectionCallback
                         break;
                     case RESOLUTION_REQUIRED:
                         try {
-                            status.startResolutionForResult((AppCompatActivity)context,1000);
+                            status.startResolutionForResult((AppCompatActivity) context, 1000);
 
                         } catch (IntentSender.SendIntentException e) {
                             // Ignore the error.
@@ -142,7 +135,9 @@ public class MapLocationProvider implements LocationListener, ConnectionCallback
     }
 
     public void disconnect() {
-        googleApiClient.disconnect();
+        if (googleApiClient.isConnected()) {
+            googleApiClient.disconnect();
+        }
     }
 
     public void resume() {

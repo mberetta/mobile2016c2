@@ -11,9 +11,14 @@ import java.io.Serializable;
 public class Entity implements Serializable {
 
     private String _id;
+    private String id;
 
     public String get_id() {
         return _id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     @Override

@@ -132,12 +132,12 @@ public class WebServicesEntryPoint {
     }
 
     public static void getStatesByCountry(Country country, WebServiceCallback<List<State>> callback) {
-        String url = BASE_URL + "/utils/locations?query=get_states&id_country=" + country.get_id();
+        String url = BASE_URL + "/utils/locations?query=get_states&id_country=" + country.getId();
         new WebServiceCallTask<List<State>>(new TypeToken<List<State>>(){}.getType(), url, "GET", callback).execute();
     }
 
     public static void getCitiesByState(State state, WebServiceCallback<List<City>> callback) {
-        String url = BASE_URL + "/utils/locations?query=get_cities&id_state=" + state.get_id();
+        String url = BASE_URL + "/utils/locations?query=get_cities&id_state=" + state.getId();
         new WebServiceCallTask<List<City>>(new TypeToken<List<City>>(){}.getType(), url, "GET", callback).execute();
     }
 
