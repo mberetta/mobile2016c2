@@ -20,7 +20,7 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
 
 import static com.google.android.gms.maps.CameraUpdateFactory.newCameraPosition;
 
-public class MapFragment extends SupportMapFragment implements OnMapReadyCallback {
+public class MapFragment extends SupportMapFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap map;
     private List<ShopMarker> markers = new ArrayList<>();
@@ -30,6 +30,18 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
             map.clear();
         }
         markers.clear();
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        for (ShopMarker shop : markers) {
+            if (marker.equals(shop.getMarker())) {
+                //TODO abrir ventana de informacion del comercio
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public interface MapFragmentListener {
@@ -69,6 +81,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+        map.setOnMarkerClickListener(this);
         ((MapFragmentListener) this.getActivity()).mapReady();
     }
 

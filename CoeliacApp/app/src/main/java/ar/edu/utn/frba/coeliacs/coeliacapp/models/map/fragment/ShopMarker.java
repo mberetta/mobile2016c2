@@ -4,10 +4,6 @@ import com.google.android.gms.maps.model.Marker;
 
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
 
-/**
- * Created by fabian on 23/10/16.
- */
-
 public class ShopMarker {
 
     private Marker marker;
