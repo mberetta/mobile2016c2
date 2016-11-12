@@ -20,7 +20,7 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
 
 import static com.google.android.gms.maps.CameraUpdateFactory.newCameraPosition;
 
-public class MapFragment extends SupportMapFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapFragment extends SupportMapFragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     private GoogleMap map;
     private List<ShopMarker> markers = new ArrayList<>();
@@ -33,15 +33,12 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
+    public void onInfoWindowClick(Marker marker) {
         for (ShopMarker shop : markers) {
             if (marker.equals(shop.getMarker())) {
                 //TODO abrir ventana de informacion del comercio
-                return true;
             }
         }
-
-        return false;
     }
 
     public interface MapFragmentListener {
@@ -65,7 +62,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                 CoordinatesLocation location = shop.getLocation();
                 MarkerOptions position = new MarkerOptions()
                         .title(shop.getName())
-                        .snippet(shop.getTelnum())
+                        .snippet("Click to get more info")
                         .position(new LatLng(location.getLat(), location.getLong()));
 
                 Marker marker = map.addMarker(position);
@@ -81,7 +78,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        map.setOnMarkerClickListener(this);
+        map.setOnInfoWindowClickListener(this);
         ((MapFragmentListener) this.getActivity()).mapReady();
     }
 
