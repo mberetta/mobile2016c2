@@ -1,4 +1,4 @@
-package ar.edu.utn.frba.coeliacs.coeliacapp.models.components;
+package ar.edu.utn.frba.coeliacs.coeliacapp.models.search;
 
 import android.content.Context;
 import android.util.Log;
@@ -12,30 +12,28 @@ import android.widget.TextView;
 
 import com.squareup.otto.Bus;
 
-import java.text.Collator;
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.regex.Pattern;
 
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 import ar.edu.utn.frba.coeliacs.coeliacapp.communication.BusProvider;
-import ar.edu.utn.frba.coeliacs.coeliacapp.communication.ItemSelectedEvent;
+import ar.edu.utn.frba.coeliacs.coeliacapp.communication.ProductSelectedEvent;
+import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Product;
 import ar.edu.utn.frba.coeliacs.coeliacapp.utils.TextUtils;
 
 /**
- * Created by mberetta on 27/10/16.
+ * Created by max on 8/11/2016.
  */
-public class IconArrayAdapter<T extends IconArrayAdapterModel> extends ArrayAdapter<T> {
-    private static final String TAG = IconArrayAdapter.class.getSimpleName();
+
+public class ProductAdapter extends ArrayAdapter<Product> {
+    private static final String TAG = ProductAdapter.class.getSimpleName();
     final private Bus bus = BusProvider.getInstance();
 
     private Context context;
-    private List<T> objects;
-    private List<T> filteredObjects;
+    private List<Product> objects;
+    private List<Product> filteredObjects;
 
-    public IconArrayAdapter(Context context, List<T> objects) {
+    public ProductAdapter(Context context, List<Product> objects) {
         super(context, -1, objects);
         this.context = context;
         this.objects = objects;
@@ -45,19 +43,19 @@ public class IconArrayAdapter<T extends IconArrayAdapterModel> extends ArrayAdap
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = layoutInflater.inflate(R.layout.icon_array_adapter, parent, false);
-        TextView titleTextView = (TextView) rowView.findViewById(R.id.titleTextView);
-        TextView subtitleTextView = (TextView) rowView.findViewById(R.id.subtitleTextView);
-        ImageView iconImageView = (ImageView) rowView.findViewById(R.id.iconImageView);
+        View rowView = layoutInflater.inflate(R.layout.item_product, parent, false);
+        TextView nameView = (TextView) rowView.findViewById(R.id.productNameView);
+        TextView descView = (TextView) rowView.findViewById(R.id.productDescView);
+        ImageView iconImageView = (ImageView) rowView.findViewById(R.id.productItemIconView);
         Log.d(TAG, "getView - size:" + objects.size() + " position:" + String.valueOf(position));
-        final T object = filteredObjects.get(position);
-        titleTextView.setText(object.getTitle());
-        subtitleTextView.setText(object.getSubtitle());
-        iconImageView.setImageResource(object.getIconResId());
+        final Product product = filteredObjects.get(position);
+        nameView.setText(product.getName());
+        descView.setText(product.getShortDescription());
+        iconImageView.setImageResource(R.drawable.search);
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bus.post(new ItemSelectedEvent(object));
+                bus.post(new ProductSelectedEvent(product));
             }
         });
         return rowView;
@@ -75,14 +73,14 @@ public class IconArrayAdapter<T extends IconArrayAdapterModel> extends ArrayAdap
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
                 String cleanConstraint = TextUtils.getRideOfAccents(constraint.toString().trim().toLowerCase());
-                ArrayList<T> tempList = new ArrayList<T>();
+                ArrayList<Product> tempList = new ArrayList<Product>();
 
                 if(constraint != null && objects != null) {
 
                     for(int i = 0; i < objects.size(); i ++) {
-                        T item = objects.get(i);
+                        Product item = objects.get(i);
 
-                        String cleanTitle = TextUtils.getRideOfAccents(item.getTitle().toLowerCase());
+                        String cleanTitle = TextUtils.getRideOfAccents(item.getName().toLowerCase());
                         Log.d(TAG, "Comparing: " + cleanConstraint + " and " + cleanTitle);
                         if (cleanTitle.contains(cleanConstraint)) {
                             tempList.add(item);
@@ -99,7 +97,7 @@ public class IconArrayAdapter<T extends IconArrayAdapterModel> extends ArrayAdap
 
             @Override
             protected void publishResults(CharSequence contraint, FilterResults results) {
-                IconArrayAdapter.this.filteredObjects = (ArrayList<T>) results.values;
+                ProductAdapter.this.filteredObjects = (ArrayList<Product>) results.values;
                 if (results.count > 0) {
                     notifyDataSetChanged();
                 } else {
@@ -108,5 +106,4 @@ public class IconArrayAdapter<T extends IconArrayAdapterModel> extends ArrayAdap
             }
         };
     }
-
 }

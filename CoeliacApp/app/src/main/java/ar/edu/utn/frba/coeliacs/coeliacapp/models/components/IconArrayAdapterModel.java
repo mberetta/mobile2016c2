@@ -5,6 +5,7 @@ package ar.edu.utn.frba.coeliacs.coeliacapp.models.components;
  */
 public interface IconArrayAdapterModel {
 
+    String get_id();
     String getTitle();
     String getSubtitle();
     int getIconResId();

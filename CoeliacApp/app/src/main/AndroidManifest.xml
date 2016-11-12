@@ -21,7 +21,11 @@
         <activity android:name=".models.MainActivity" />
         <activity android:name=".models.MapActivity" />
         <activity android:name=".models.CodeBarReaderActivity" />
-        <activity android:name=".models.SearchActivity" />
+        <activity android:name=".models.search.SearchActivity" />
+        <activity android:name=".models.search.ProductListActivity"></activity>
+        <activity android:name=".models.search.ShopListActivity"></activity>
+        <activity android:name=".models.search.ProductDetailsActivity" />
+        <activity android:name=".models.search.ShopDetailsActivity" />
         <activity android:name=".models.discounts.DiscountsActivity"></activity>
     </application>
 
