@@ -27,7 +27,8 @@
         <activity android:name=".models.search.ShopListActivity"></activity>
         <activity android:name=".models.search.ProductDetailsActivity" />
         <activity android:name=".models.search.ShopDetailsActivity" />
-        <activity android:name=".models.discounts.DiscountsActivity"></activity>
+        <activity android:name=".models.discounts.DiscountsActivity" />
+        <activity android:name=".models.ConfigActivity"></activity>
     </application>
 
 </manifest>

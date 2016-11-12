@@ -13,6 +13,7 @@ import java.util.List;
 
 import ar.edu.utn.frba.coeliacs.coeliacapp.ErrorHandling;
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
+import ar.edu.utn.frba.coeliacs.coeliacapp.configuration.CfgManager;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Discount;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
 import ar.edu.utn.frba.coeliacs.coeliacapp.location.LocationProvider;
@@ -60,8 +61,7 @@ public class DiscountsActivity extends AppCompatActivity {
         new LocationProvider(this) {
             @Override
             public void onLastKnownLocationAvailable(double latitude, double longitude) {
-                // TODO get radius from user config
-                int radiusKm = 200;
+                int radiusKm = CfgManager.getSearchDistance(DiscountsActivity.this);
 
                 // TODO lazy loading?
                 // TODO recycled view?

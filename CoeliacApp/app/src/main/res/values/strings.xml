@@ -13,4 +13,8 @@
     <string name="units">unidades</string>
     <string name="searchProductsButtonText">Productos</string>
     <string name="searchShopsButtonText">Comercios</string>
+    <string name="show_config">Configuración</string>
+    <string name="search_distance">Distancia de búsqueda</string>
+    <string name="distance_unit">km</string>
+    <string name="cfg_set">Configuración actualizada</string>
 </resources>
