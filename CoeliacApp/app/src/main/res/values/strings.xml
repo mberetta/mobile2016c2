@@ -11,4 +11,6 @@
     <string name="description">Descripción</string>
     <string name="availableQuantity">Cantidad disponible</string>
     <string name="units">unidades</string>
+    <string name="searchProductsButtonText">Productos</string>
+    <string name="searchShopsButtonText">Comercios</string>
 </resources>

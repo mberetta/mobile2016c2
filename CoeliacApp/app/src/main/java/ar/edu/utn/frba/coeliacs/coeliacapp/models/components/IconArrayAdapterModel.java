@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 public interface IconArrayAdapterModel extends Serializable {
 
+    String get_id();
     String getTitle();
     String getSubtitle();
     int getIconResId();

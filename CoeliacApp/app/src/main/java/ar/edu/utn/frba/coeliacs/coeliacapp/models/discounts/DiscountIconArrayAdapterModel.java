@@ -36,4 +36,9 @@ public class DiscountIconArrayAdapterModel extends IconArrayAdapterModelImpl<Dis
         return ownerShop;
     }
 
+    @Override
+    public String get_id() {
+        return getObject().get_id();
+    }
+
 }

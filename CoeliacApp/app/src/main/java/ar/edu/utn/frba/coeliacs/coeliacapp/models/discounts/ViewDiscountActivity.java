@@ -94,6 +94,11 @@ public class ViewDiscountActivity extends AppCompatActivity {
         shop = new ArrayList<IconArrayAdapterModel>();
         shop.add(new IconArrayAdapterModelImpl<Shop>(discountModel.getOwnerShop()) {
             @Override
+            public String get_id() {
+                return getObject().get_id();
+            }
+
+            @Override
             public String getTitle() {
                 return getObject().getName();
             }
@@ -119,6 +124,10 @@ public class ViewDiscountActivity extends AppCompatActivity {
         hardcodedProduct.setName("Barra de cereal para celíaco");
 
         IconArrayAdapterModelImpl<Product> productModel = new IconArrayAdapterModelImpl<Product>(hardcodedProduct) {
+            @Override
+            public String get_id() {
+                return getObject().get_id();
+            }
             @Override
             public String getTitle() {
                 return getObject().getName();

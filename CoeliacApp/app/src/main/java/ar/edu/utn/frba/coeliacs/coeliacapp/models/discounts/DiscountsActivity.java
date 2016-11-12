@@ -20,7 +20,7 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Discount;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
 import ar.edu.utn.frba.coeliacs.coeliacapp.location.LocationProvider;
-import ar.edu.utn.frba.coeliacs.coeliacapp.models.SearchActivity;
+import ar.edu.utn.frba.coeliacs.coeliacapp.models.search.SearchActivity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapter;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapterModelImpl;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceCallback;
