@@ -9,12 +9,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ar.edu.utn.frba.coeliacs.coeliacapp.models.CodeBarReaderActivity">
 
-    <TextView
+    <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Add codebar reader here!!"
-        android:id="@+id/textView4"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/progress_discounts"
+        android:layout_centerInParent="true"/>
+
 </RelativeLayout>

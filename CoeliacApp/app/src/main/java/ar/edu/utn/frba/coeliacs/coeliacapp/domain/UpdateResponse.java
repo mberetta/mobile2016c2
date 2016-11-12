@@ -1,9 +1,11 @@
 package ar.edu.utn.frba.coeliacs.coeliacapp.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by mberetta on 15/10/2016.
  */
-public class UpdateResponse {
+public class UpdateResponse implements Serializable {
 
     private int ok;
     private int nModified;
