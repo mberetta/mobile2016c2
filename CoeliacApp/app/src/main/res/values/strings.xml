@@ -17,4 +17,5 @@
     <string name="search_distance">Distancia de búsqueda</string>
     <string name="distance_unit">km</string>
     <string name="cfg_set">Configuración actualizada</string>
+    <string name="error_product_not_found">Producto no encontrado</string>
 </resources>

@@ -11,6 +11,7 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.ErrorHandling;
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Product;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
+import ar.edu.utn.frba.coeliacs.coeliacapp.models.discounts.ViewDiscountActivity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceCallback;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceResponse;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServicesEntryPoint;
@@ -39,7 +40,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         titleView = (TextView)findViewById(R.id.detailsTitleView);
         subTitleView = (TextView)findViewById(R.id.subtitleTextView);
         Bundle bundle = this.getIntent().getExtras();
-        product = (Product) bundle.getSerializable("PRODUCT");
+        product = (Product) bundle.getSerializable(ViewDiscountActivity.EXTRA_PRODUCT);
         titleView.setText(product.getName());
         subTitleView.setText(product.getShortDescription());
         fillListWithShops();

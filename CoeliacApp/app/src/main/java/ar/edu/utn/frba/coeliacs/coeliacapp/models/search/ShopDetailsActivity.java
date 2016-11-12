@@ -13,6 +13,7 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.ErrorHandling;
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Product;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
+import ar.edu.utn.frba.coeliacs.coeliacapp.models.discounts.ViewDiscountActivity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceCallback;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceResponse;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServicesEntryPoint;
@@ -42,7 +43,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
         addressView = (TextView)findViewById(R.id.shopAddressView);
         phoneView = (TextView)findViewById(R.id.shopPhoneView);
         Bundle bundle = this.getIntent().getExtras();
-        shop = (Shop) bundle.getSerializable("SHOP");
+        shop = (Shop) bundle.getSerializable(ViewDiscountActivity.EXTRA_SHOP);
         nameView.setText(shop.getName());
         phoneView.setText(shop.getTelnum());
         addressView.setText(shop.getAddress());
