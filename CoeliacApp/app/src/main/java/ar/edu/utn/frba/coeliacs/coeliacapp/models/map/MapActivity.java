@@ -120,7 +120,7 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
                     mapFragment.setMarkers(shops);
                     mapFragment.updateCamera(cameraView);
                 } else {
-                    makeText(MapActivity.this, "No results found", LENGTH_SHORT);
+                    makeText(MapActivity.this, R.string.no_results_found, LENGTH_SHORT);
                 }
             }
         };
@@ -152,7 +152,7 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
         switch (requestCode) {
             case REQUEST_CODE:
                 updatePreferences();
-                makeText(this, "Settings updated", LENGTH_SHORT).show();
+                makeText(this, getString(R.string.cfg_set), LENGTH_SHORT).show();
                 updateMap();
             break;
             case 1000:

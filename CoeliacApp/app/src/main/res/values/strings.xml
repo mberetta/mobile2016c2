@@ -27,4 +27,12 @@
     <string name="search_product_title">Búsqueda de productos</string>
     <string name="shop_detail_title">Ver comercio</string>
     <string name="product_detail_title">Ver producto</string>
+    <string name="next">Siguiente</string>
+    <string name="cancel">Cancelar</string>
+    <string name="ok">Ok</string>
+    <string name="location">"Ubicacion: "</string>
+    <string name="no_results_found">No se encontraron resultados</string>
+    <string name="use_gps">Usar localizacion GPS</string>
+    <string name="location_button">Ubicacion</string>
+    <string name="select_product">Selecctionar producto</string>
 </resources>

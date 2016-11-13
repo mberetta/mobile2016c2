@@ -93,7 +93,7 @@ public class MapSettingsActivity extends AppCompatActivity {
         });
 
         if (selectedLocation != null) {
-            ((TextView) findViewById(R.id.location_text)).setText("Location: " + selectedLocation);
+            ((TextView) findViewById(R.id.location_text)).setText(getString(R.string.location) + selectedLocation);
         }
 
         locationButton = (Button) findViewById(R.id.location_button);
@@ -151,7 +151,7 @@ public class MapSettingsActivity extends AppCompatActivity {
 
     private void finishDialog(Entity value, DialogInterface parent) {
         selectedLocation = value;
-        ((TextView) findViewById(R.id.location_text)).setText("Location: " + value.toString());
+        ((TextView) findViewById(R.id.location_text)).setText(getString(R.string.location) + value.toString());
         if (parent != null) {
             parent.dismiss();
         }
@@ -168,12 +168,12 @@ public class MapSettingsActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         position[0] = which;
                     }
-                }).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                }).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finishDialog(values.get(position[0]), parent);
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -181,7 +181,7 @@ public class MapSettingsActivity extends AppCompatActivity {
                 });
 
         if (hasNext) {
-            builder = builder.setNeutralButton("More", new DialogInterface.OnClickListener() {
+            builder = builder.setNeutralButton(getString(R.string.next), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (parent != null) {
