@@ -10,6 +10,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Entity;
+import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Product;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -17,6 +18,7 @@ public class MapPreferencesManager {
 
     private static final String USE_LOCATION = "USE_LOCATION";
     private static final String RADIUS = "RADIUS";
+    private static final String PRODUCT = "PRODUCT";
     private static final String SETTINGS_PREFERENCES = "SETTINGS_PREFERENCES";
     private static final String LOCATION = "LOCATION";
     private static final String LOCATION_TYPE = "LOCATION_TYPE";
@@ -86,6 +88,22 @@ public class MapPreferencesManager {
     public void saveLastKnownLocation(Location location) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(LAST_KNOWN_LOCATION, gson.toJson(location));
+        SharedPreferencesCompat.EditorCompat.getInstance().apply(editor);
+    }
+
+    public Product getProduct() {
+        String productString = preferences.getString(PRODUCT, null);
+
+        if (productString != null) {
+            return gson.fromJson(productString, Product.class);
+        }
+
+        return null;
+    }
+
+    public void saveProduct(Product product) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(PRODUCT, gson.toJson(product));
         SharedPreferencesCompat.EditorCompat.getInstance().apply(editor);
     }
 }

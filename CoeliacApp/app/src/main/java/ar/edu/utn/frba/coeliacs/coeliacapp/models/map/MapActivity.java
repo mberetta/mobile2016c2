@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
@@ -16,6 +17,7 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.domain.City;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Continent;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Country;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Entity;
+import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Product;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.State;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.map.MapLocationProvider.MapLocationProviderListener;
@@ -24,6 +26,7 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.models.map.fragment.MapFragment;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.map.fragment.MapFragment.MapFragmentListener;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceCallback;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceResponse;
+import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServicesEntryPoint;
 
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
@@ -45,6 +48,7 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
     private Entity location;
     private boolean useLocation;
     private Location lastKnownLocation;
+    private Product selectedProduct;
 
     @Override
     public void mapReady() {
@@ -54,6 +58,7 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(getString(R.string.map));
         setContentView(R.layout.activity_map);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -115,15 +120,39 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
         return new WebServiceCallback<List<Shop>>() {
             @Override
             public void onFinished(WebServiceResponse<List<Shop>> webServiceResponse) {
-                List<Shop> shops = webServiceResponse.getBodyAsObject();
-                if (shops != null && !shops.isEmpty()) {
-                    mapFragment.setMarkers(shops);
-                    mapFragment.updateCamera(cameraView);
+                final List<Shop> shops;
+                if (webServiceResponse.getBodyAsObject() == null) {
+                    shops = new ArrayList<>();
                 } else {
-                    makeText(MapActivity.this, R.string.no_results_found, LENGTH_SHORT).show();
+                    shops = webServiceResponse.getBodyAsObject();
+                }
+
+                if (selectedProduct != null) {
+                    WebServicesEntryPoint.getShopsThatSellAProduct(selectedProduct, new WebServiceCallback<List<Shop>>() {
+                        @Override
+                        public void onFinished(WebServiceResponse<List<Shop>> webServiceResponse) {
+                            List<Shop> body = webServiceResponse.getBodyAsObject();
+                            if (body == null) {
+                                body = new ArrayList<>();
+                            }
+                            shops.retainAll(body);
+                            processResponse(shops, cameraView);
+                        }
+                    });
+                } else {
+                    processResponse(shops, cameraView);
                 }
             }
         };
+    }
+
+    private void processResponse(List<Shop> shops, int cameraView) {
+        if (shops.isEmpty()) {
+            makeText(MapActivity.this, R.string.no_results_found, LENGTH_SHORT).show();
+        } else {
+            mapFragment.setMarkers(shops);
+            mapFragment.updateCamera(cameraView);
+        }
     }
 
     @Override
@@ -154,7 +183,7 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
                 updatePreferences();
                 makeText(this, getString(R.string.cfg_set), LENGTH_SHORT).show();
                 updateMap();
-            break;
+                break;
             case 1000:
                 if (resultCode == 0) {
                     updateMap();
@@ -170,6 +199,7 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
 
     private void updateMap() {
         mapFragment.clearMarkers();
+        selectedProduct = preferences.getProduct();
         location = preferences.getLocation();
         if (!useLocation) {
             locationProvider.disconnect();

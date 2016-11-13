@@ -23,9 +23,9 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.domain.City;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Continent;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Country;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Entity;
+import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Product;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.State;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.map.component.MapPreferencesManager;
-import ar.edu.utn.frba.coeliacs.coeliacapp.models.search.SearchActivity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceCallback;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceResponse;
 
@@ -36,10 +36,12 @@ import static ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServicesEntryPo
 
 public class MapSettingsActivity extends AppCompatActivity {
 
+    public static final int INT = 1002;
     private SeekBar seekBar;
     private TextView seekText;
     private Button locationButton;
-    private Button productButton;
+    private Button deleteProduct;
+    private TextView productName;
 
     List<Continent> continents;
 
@@ -47,10 +49,12 @@ public class MapSettingsActivity extends AppCompatActivity {
     private int actualRadius;
     private MapPreferencesManager preferences;
     private Entity selectedLocation;
+    private Product selectedProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(getString(R.string.map_settings));
         setContentView(R.layout.activity_map_settings);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -58,11 +62,11 @@ public class MapSettingsActivity extends AppCompatActivity {
 
         useLocation = preferences.getUseLocation();
         actualRadius = preferences.getRadius();
-        selectedLocation = preferences.getLocation();
+        selectedProduct = preferences.getProduct();
 
         locationSwitch();
         locationButton();
-        productButton();
+        product();
 
         seekBar(actualRadius);
 
@@ -71,17 +75,45 @@ public class MapSettingsActivity extends AppCompatActivity {
         } else {
             showList();
         }
+
+        if (selectedProduct == null) {
+            hideProductInfo();
+        } else {
+            showProductInfo();
+        }
     }
 
-    private void productButton() {
-        productButton = (Button) findViewById(R.id.products_button);
+    private void product() {
+        productName = (TextView) findViewById(R.id.product_name);
+        deleteProduct = (Button) findViewById(R.id.delete_product);
+        deleteProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedProduct = null;
+                hideProductInfo();
+            }
+        });
+
+        Button productButton = (Button) findViewById(R.id.products_button);
         productButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MapSettingsActivity.this, SearchActivity.class);
-                startActivityForResult(intent, 1002);
+                Intent intent = new Intent(MapSettingsActivity.this, MapProductListActivity.class);
+                startActivityForResult(intent, INT);
             }
         });
+
+    }
+
+    private void showProductInfo() {
+        productName.setText(selectedProduct.getName());
+        productName.setVisibility(View.VISIBLE);
+        deleteProduct.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProductInfo() {
+        productName.setVisibility(View.INVISIBLE);
+        deleteProduct.setVisibility(View.INVISIBLE);
     }
 
     private void locationButton() {
@@ -273,6 +305,8 @@ public class MapSettingsActivity extends AppCompatActivity {
         if (selectedLocation != null) {
             preferences.saveLocation(selectedLocation);
         }
+        preferences.saveProduct(selectedProduct);
+
         setResult(RESULT_OK);
         finish();
     }
@@ -282,6 +316,20 @@ public class MapSettingsActivity extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.map_settings_menu, menu);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == INT && data != null) {
+            Product product = (Product) data.getExtras().getSerializable("PRODUCT");
+            if (product != null) {
+                selectedProduct = product;
+                showProductInfo();
+            }
+
+        }
     }
 
     private interface ElementCallback<T extends Entity> {

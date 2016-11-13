@@ -33,6 +33,7 @@
         <activity android:name=".models.discounts.DiscountsActivity" />
         <activity android:name=".models.ConfigActivity" />
         <activity android:name=".models.map.MapSettingsActivity" />
+        <activity android:name=".models.map.MapProductListActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"
