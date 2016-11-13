@@ -149,10 +149,17 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (REQUEST_CODE == requestCode) {
-            updatePreferences();
-            makeText(this, "Settings updated", LENGTH_SHORT).show();
-            updateMap();
+        switch (requestCode) {
+            case REQUEST_CODE:
+                updatePreferences();
+                makeText(this, "Settings updated", LENGTH_SHORT).show();
+                updateMap();
+            break;
+            case 1000:
+                if (resultCode == 0) {
+                    updateMap();
+                }
+                break;
         }
     }
 
@@ -164,7 +171,7 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
     private void updateMap() {
         mapFragment.clearMarkers();
         location = preferences.getLocation();
-        if (!useLocation && location != null) {
+        if (!useLocation) {
             locationProvider.disconnect();
             showByLocation(location);
         } else if (useLocation) {
@@ -178,6 +185,10 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
     }
 
     private void showByLocation(Entity location) {
+        if (location == null) {
+            return;
+        }
+
         if (location instanceof Continent) {
             getShopsByContinent((Continent) location, getCallback(1));
             return;

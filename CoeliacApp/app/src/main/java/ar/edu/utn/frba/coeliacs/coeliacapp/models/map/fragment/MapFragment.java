@@ -1,5 +1,6 @@
 package ar.edu.utn.frba.coeliacs.coeliacapp.models.map.fragment;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -15,8 +16,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.CoordinatesLocation;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
+import ar.edu.utn.frba.coeliacs.coeliacapp.models.search.ShopDetailsActivity;
 
 import static com.google.android.gms.maps.CameraUpdateFactory.newCameraPosition;
 
@@ -36,7 +39,9 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     public void onInfoWindowClick(Marker marker) {
         for (ShopMarker shop : markers) {
             if (marker.equals(shop.getMarker())) {
-                //TODO abrir ventana de informacion del comercio
+                Intent shopIntent = new Intent(getActivity(), ShopDetailsActivity.class);
+                shopIntent.putExtra("SHOP", shop.getShop());
+                startActivity(shopIntent);
             }
         }
     }
@@ -62,7 +67,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                 CoordinatesLocation location = shop.getLocation();
                 MarkerOptions position = new MarkerOptions()
                         .title(shop.getName())
-                        .snippet("Click to get more info")
+                        .snippet(getString(R.string.more_info))
                         .position(new LatLng(location.getLat(), location.getLong()));
 
                 Marker marker = map.addMarker(position);
