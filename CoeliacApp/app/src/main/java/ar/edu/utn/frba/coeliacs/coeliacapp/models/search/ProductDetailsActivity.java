@@ -35,6 +35,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.product_detail_title);
         setContentView(R.layout.activity_product_details);
         shopsListView = (ListView) findViewById(R.id.recomendedShopList);
         titleView = (TextView)findViewById(R.id.detailsTitleView);

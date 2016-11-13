@@ -12,8 +12,6 @@ public class UIUtils {
 
     public static void justifyListViewHeightBasedOnChildren (ListView listView) {
 
-        // TODO find out why this does not work correctly when item count = 1
-
         ListAdapter adapter = listView.getAdapter();
 
         if (adapter == null) {

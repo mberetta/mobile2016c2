@@ -19,6 +19,7 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 import ar.edu.utn.frba.coeliacs.coeliacapp.communication.BusProvider;
 import ar.edu.utn.frba.coeliacs.coeliacapp.communication.ProductSelectedEvent;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Product;
+import ar.edu.utn.frba.coeliacs.coeliacapp.models.discounts.ViewDiscountActivity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceCallback;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceResponse;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServicesEntryPoint;
@@ -41,6 +42,7 @@ public class ProductListActivity  extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.search_product_title);
 
         bus.register(this);
 
@@ -92,7 +94,7 @@ public class ProductListActivity  extends AppCompatActivity {
 
         Intent intent = new Intent(this, ProductDetailsActivity.class);
         Bundle b = new Bundle();
-        b.putSerializable("PRODUCT", item);
+        b.putSerializable(ViewDiscountActivity.EXTRA_PRODUCT, item);
         intent.putExtras(b);
         startActivity(intent);
     }
