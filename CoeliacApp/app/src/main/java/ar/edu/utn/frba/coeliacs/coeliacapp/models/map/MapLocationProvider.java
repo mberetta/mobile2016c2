@@ -23,7 +23,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
@@ -68,8 +67,8 @@ public class MapLocationProvider implements LocationListener, ConnectionCallback
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        if (checkSelfPermission(context, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED && checkSelfPermission(context, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
-            Toast.makeText(context, "Cannot get location", Toast.LENGTH_SHORT);
+        if (checkSelfPermission(context, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
+            Toast.makeText(context, "Cannot get location", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -88,7 +87,6 @@ public class MapLocationProvider implements LocationListener, ConnectionCallback
                     case RESOLUTION_REQUIRED:
                         try {
                             status.startResolutionForResult((AppCompatActivity) context, 1000);
-
                         } catch (IntentSender.SendIntentException e) {
                             // Ignore the error.
                         }
@@ -102,13 +100,13 @@ public class MapLocationProvider implements LocationListener, ConnectionCallback
     }
 
     private void updateLocationRequest() {
-        if (checkSelfPermission(context, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED && checkSelfPermission(context, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
+        if (checkSelfPermission(context, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
             return;
         }
 
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(1000);
         locationRequest.setPriority(PRIORITY_HIGH_ACCURACY);
         FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
     }
@@ -124,7 +122,7 @@ public class MapLocationProvider implements LocationListener, ConnectionCallback
     }
 
     public Location currentLocation() {
-        if (checkSelfPermission(context, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED && checkSelfPermission(context, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
+        if (checkSelfPermission(context, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
             return null;
         }
         return FusedLocationApi.getLastLocation(googleApiClient);

@@ -120,7 +120,7 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
                     mapFragment.setMarkers(shops);
                     mapFragment.updateCamera(cameraView);
                 } else {
-                    makeText(MapActivity.this, R.string.no_results_found, LENGTH_SHORT);
+                    makeText(MapActivity.this, R.string.no_results_found, LENGTH_SHORT).show();
                 }
             }
         };
@@ -174,7 +174,7 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
         if (!useLocation) {
             locationProvider.disconnect();
             showByLocation(location);
-        } else if (useLocation) {
+        } else {
             locationProvider.resume();
             Location currentLocation = locationProvider.currentLocation();
             if (currentLocation != null) {
