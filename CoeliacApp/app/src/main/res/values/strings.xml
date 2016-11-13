@@ -5,9 +5,18 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="error_location">Error al obtener ubicación.</string>
     <string name="title_near_discounts">Descuentos cercanos</string>
-    <string name="select_continent">Continente</string>
-    <string name="select_country">Pais</string>
-    <string name="select_state">Provincia</string>
-    <string name="select_city">Ciudad</string>
-
+    <string name="title_view_discount">Ver descuento</string>
+    <string name="shop">Comercio</string>
+    <string name="product">Productos</string>
+    <string name="details">Detalles</string>
+    <string name="termsAndConditions">Términos y condiciones</string>
+    <string name="description">Descripción</string>
+    <string name="availableQuantity">Cantidad disponible</string>
+    <string name="units">unidades</string>
+    <string name="searchProductsButtonText">Productos</string>
+    <string name="searchShopsButtonText">Comercios</string>
+    <string name="show_config">Configuración</string>
+    <string name="search_distance">Distancia de búsqueda</string>
+    <string name="distance_unit">km</string>
+    <string name="cfg_set">Configuración actualizada</string>
 </resources>

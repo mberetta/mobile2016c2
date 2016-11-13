@@ -108,6 +108,11 @@ public class WebServicesEntryPoint {
         new WebServiceCallTask<List<Shop>>(new TypeToken<List<Shop>>(){}.getType(), url, "GET", callback).execute();
     }
 
+    public static void getShopsThatSellAProduct(String productId, WebServiceCallback<List<Shop>> callback) {
+        String url = BASE_URL + "/product/shops?barcode=" + productId;
+        new WebServiceCallTask<List<Shop>>(new TypeToken<List<Shop>>(){}.getType(), url, "GET", callback).execute();
+    }
+
     //===========================================================================
     // Discounts
     //===========================================================================

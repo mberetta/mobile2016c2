@@ -21,6 +21,10 @@ public class Entity implements Serializable {
         return id;
     }
 
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) return false;

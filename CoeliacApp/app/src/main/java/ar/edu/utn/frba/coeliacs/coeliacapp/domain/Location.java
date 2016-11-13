@@ -1,9 +1,11 @@
 package ar.edu.utn.frba.coeliacs.coeliacapp.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by mberetta on 14/10/2016.
  */
-public class Location {
+public class Location implements Serializable {
 
     private String city;
     private String state;

@@ -24,8 +24,8 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Continent;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Country;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Entity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.State;
-import ar.edu.utn.frba.coeliacs.coeliacapp.models.SearchActivity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.map.component.MapPreferencesManager;
+import ar.edu.utn.frba.coeliacs.coeliacapp.models.search.SearchActivity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceCallback;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceResponse;
 

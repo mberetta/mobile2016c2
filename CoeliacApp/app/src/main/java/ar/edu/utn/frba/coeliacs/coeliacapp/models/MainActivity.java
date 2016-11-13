@@ -3,12 +3,16 @@ package ar.edu.utn.frba.coeliacs.coeliacapp.models;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.discounts.DiscountsActivity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.map.MapActivity;
+import ar.edu.utn.frba.coeliacs.coeliacapp.models.search.SearchActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -110,4 +114,22 @@ public class MainActivity extends AppCompatActivity {
         */
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_activity_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.show_config) {
+            Intent intent = new Intent(MainActivity.this, ConfigActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

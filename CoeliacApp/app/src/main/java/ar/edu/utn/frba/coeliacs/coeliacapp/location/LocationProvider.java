@@ -26,6 +26,7 @@ public abstract class LocationProvider implements GoogleApiClient.ConnectionCall
 
     @Override
     public void onConnected(Bundle bundle) {
+        // TODO ask for permission if needed
         Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         onLastKnownLocationAvailable(location.getLatitude(), location.getLongitude());
         googleApiClient.disconnect();

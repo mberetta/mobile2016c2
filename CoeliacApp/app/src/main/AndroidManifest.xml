@@ -22,8 +22,14 @@
         <activity android:name=".models.MainActivity" />
         <activity android:name=".models.map.MapActivity" />
         <activity android:name=".models.CodeBarReaderActivity" />
-        <activity android:name=".models.SearchActivity" />
+        <activity android:name=".models.discounts.ViewDiscountActivity" />
+        <activity android:name=".models.search.SearchActivity" />
+        <activity android:name=".models.search.ProductListActivity" />
+        <activity android:name=".models.search.ShopListActivity" />
+        <activity android:name=".models.search.ProductDetailsActivity" />
+        <activity android:name=".models.search.ShopDetailsActivity" />
         <activity android:name=".models.discounts.DiscountsActivity" />
+        <activity android:name=".models.ConfigActivity" />
         <activity android:name=".models.map.MapSettingsActivity" />
 
         <meta-data
@@ -33,7 +39,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBPlF9QyQi41AN-Qa6QNMLj32rlIIb_JX4" />
 
-        <activity android:name=".models.map.LocationActivity" />
     </application>
 
 </manifest>

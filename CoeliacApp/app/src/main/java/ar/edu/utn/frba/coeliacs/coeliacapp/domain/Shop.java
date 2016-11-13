@@ -2,10 +2,12 @@ package ar.edu.utn.frba.coeliacs.coeliacapp.domain;
 
 import java.util.List;
 
+import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapterModel;
+
 /**
  * Created by mberetta on 14/10/2016.
  */
-public class Shop extends Entity {
+public class Shop extends Entity{
 
     private String name;
     private String telnum;

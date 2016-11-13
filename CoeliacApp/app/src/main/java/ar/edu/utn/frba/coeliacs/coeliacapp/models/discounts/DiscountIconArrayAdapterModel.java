@@ -32,4 +32,13 @@ public class DiscountIconArrayAdapterModel extends IconArrayAdapterModelImpl<Dis
         return R.drawable.discount;
     }
 
+    public Shop getOwnerShop() {
+        return ownerShop;
+    }
+
+    @Override
+    public String get_id() {
+        return getObject().get_id();
+    }
+
 }
