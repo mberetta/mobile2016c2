@@ -29,6 +29,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
     private TextView nameView;
     private TextView addressView;
     private TextView phoneView;
+    private TextView shortDescriptionTextView;
 
     //Internal Data
     private Shop shop;
@@ -43,11 +44,13 @@ public class ShopDetailsActivity extends AppCompatActivity {
         nameView = (TextView)findViewById(R.id.shopNameView);
         addressView = (TextView)findViewById(R.id.shopAddressView);
         phoneView = (TextView)findViewById(R.id.shopPhoneView);
+        shortDescriptionTextView = (TextView) findViewById(R.id.subtitleTextView);
         Bundle bundle = this.getIntent().getExtras();
         shop = (Shop) bundle.getSerializable(ViewDiscountActivity.EXTRA_SHOP);
         nameView.setText(shop.getName());
         phoneView.setText(shop.getTelnum());
         addressView.setText(shop.getAddress());
+        shortDescriptionTextView.setText(shop.getShortDescription());
 
         fillListWithProducts();
     }

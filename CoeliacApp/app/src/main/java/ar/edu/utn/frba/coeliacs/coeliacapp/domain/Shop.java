@@ -15,6 +15,9 @@ public class Shop extends Entity{
     private Boolean exclusive;
     private CoordinatesLocation location;
     private List<Discount> discounts;
+    private String shortDescription = "Short Description Default";
+
+    public String getShortDescription() {return shortDescription;}
 
     public String getName() {
         return name;

@@ -25,7 +25,7 @@ public class CodeBarReaderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(R.string.barcode_reader);
+        setTitle("Lector ");
         setContentView(R.layout.activity_code_bar_reader);
 
         IntentIntegrator zxing = new IntentIntegrator(CodeBarReaderActivity.this);
@@ -56,6 +56,8 @@ public class CodeBarReaderActivity extends AppCompatActivity {
                     }
                 }
             });
+        } else {
+            finish();
         }
     }
 

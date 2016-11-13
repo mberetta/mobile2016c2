@@ -36,6 +36,14 @@
         android:textSize="20sp"/>
 
     <TextView
+        android:id="@+id/subtitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="SubTitulo del producto"
+        android:layout_marginBottom="32dp"
+        android:textSize="20sp"/>
+
+    <TextView
         android:id="@+id/whereToBuyLabelView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
