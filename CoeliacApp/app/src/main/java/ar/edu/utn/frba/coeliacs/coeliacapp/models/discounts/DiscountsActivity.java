@@ -1,7 +1,7 @@
 package ar.edu.utn.frba.coeliacs.coeliacapp.models.discounts;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +17,7 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 import ar.edu.utn.frba.coeliacs.coeliacapp.configuration.CfgManager;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Discount;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
-import ar.edu.utn.frba.coeliacs.coeliacapp.location.LocationProvider;
+import ar.edu.utn.frba.coeliacs.coeliacapp.location.MapLocationProvider;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapter;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceCallback;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceResponse;
@@ -29,7 +29,7 @@ public class DiscountsActivity extends AppCompatActivity {
     private ListView discountsListView;
     private ArrayList<DiscountIconArrayAdapterModel> discounts;
     private ProgressBar progressBar;
-    private LocationProvider locProvider;
+    private MapLocationProvider locProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,17 +59,14 @@ public class DiscountsActivity extends AppCompatActivity {
             }
         }
 
-        getAndUseLocation();
-
-    }
-
-    private void getAndUseLocation() {
-        locProvider = new LocationProvider(this) {
+        locProvider = new MapLocationProvider(this, new MapLocationProvider.MapLocationProviderListener() {
             @Override
-            public void onLastKnownLocationAvailable(double latitude, double longitude) {
+            public void changeLocation(Location location) {
                 int radiusKm = CfgManager.getSearchDistance(DiscountsActivity.this);
 
-                WebServicesEntryPoint.getShopsByRadius(latitude, longitude, radiusKm, new WebServiceCallback<List<Shop>>() {
+                locProvider.disconnect();
+
+                WebServicesEntryPoint.getShopsByRadius(location.getLatitude(), location.getLongitude(), radiusKm, new WebServiceCallback<List<Shop>>() {
                     @Override
                     public void onFinished(WebServiceResponse<List<Shop>> webServiceResponse) {
                         if (webServiceResponse.getEx() != null) {
@@ -87,28 +84,16 @@ public class DiscountsActivity extends AppCompatActivity {
                     }
                 });
             }
+        });
 
-            @Override
-            public void onError() {
-                finish();
-                ErrorHandling.showLocationError(DiscountsActivity.this);
-            }
-        };
+        locProvider.resume();
+
     }
 
     private void updateUI() {
         progressBar.setVisibility(View.GONE);
         discountsListView.setVisibility(View.VISIBLE);
         discountsListView.setAdapter(new IconArrayAdapter<DiscountIconArrayAdapterModel>(DiscountsActivity.this, discounts));
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == LocationProvider.LOCATION_PROVIDER_PERM_REQ) {
-            if (locProvider.onRequestPermissionsResult(permissions, grantResults)) {
-                getAndUseLocation();
-            }
-        }
     }
 
     @Override
