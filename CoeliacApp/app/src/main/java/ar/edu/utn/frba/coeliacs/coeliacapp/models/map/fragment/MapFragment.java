@@ -19,6 +19,7 @@ import java.util.List;
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.CoordinatesLocation;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
+import ar.edu.utn.frba.coeliacs.coeliacapp.models.discounts.ViewDiscountActivity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.search.ShopDetailsActivity;
 
 import static com.google.android.gms.maps.CameraUpdateFactory.newCameraPosition;
@@ -40,7 +41,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         for (ShopMarker shop : markers) {
             if (marker.equals(shop.getMarker())) {
                 Intent shopIntent = new Intent(getActivity(), ShopDetailsActivity.class);
-                shopIntent.putExtra("SHOP", shop.getShop());
+                shopIntent.putExtra(ViewDiscountActivity.EXTRA_SHOP, shop.getShop());
                 startActivity(shopIntent);
             }
         }
