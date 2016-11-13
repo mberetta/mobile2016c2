@@ -1,6 +1,7 @@
 package ar.edu.utn.frba.coeliacs.coeliacapp.models.discounts;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +18,6 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.configuration.CfgManager;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Discount;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
 import ar.edu.utn.frba.coeliacs.coeliacapp.location.LocationProvider;
-import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.FilterIconArrayAdapter;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapter;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceCallback;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceResponse;
@@ -29,6 +29,7 @@ public class DiscountsActivity extends AppCompatActivity {
     private ListView discountsListView;
     private ArrayList<DiscountIconArrayAdapterModel> discounts;
     private ProgressBar progressBar;
+    private LocationProvider locProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +59,15 @@ public class DiscountsActivity extends AppCompatActivity {
             }
         }
 
-        new LocationProvider(this) {
+        getAndUseLocation();
+
+    }
+
+    private void getAndUseLocation() {
+        locProvider = new LocationProvider(this) {
             @Override
             public void onLastKnownLocationAvailable(double latitude, double longitude) {
                 int radiusKm = CfgManager.getSearchDistance(DiscountsActivity.this);
-
-                // TODO lazy loading?
-                // TODO recycled view?
 
                 WebServicesEntryPoint.getShopsByRadius(latitude, longitude, radiusKm, new WebServiceCallback<List<Shop>>() {
                     @Override
@@ -91,13 +94,21 @@ public class DiscountsActivity extends AppCompatActivity {
                 ErrorHandling.showLocationError(DiscountsActivity.this);
             }
         };
-
     }
 
     private void updateUI() {
         progressBar.setVisibility(View.GONE);
         discountsListView.setVisibility(View.VISIBLE);
         discountsListView.setAdapter(new IconArrayAdapter<DiscountIconArrayAdapterModel>(DiscountsActivity.this, discounts));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == LocationProvider.LOCATION_PROVIDER_PERM_REQ) {
+            if (locProvider.onRequestPermissionsResult(permissions, grantResults)) {
+                getAndUseLocation();
+            }
+        }
     }
 
     @Override

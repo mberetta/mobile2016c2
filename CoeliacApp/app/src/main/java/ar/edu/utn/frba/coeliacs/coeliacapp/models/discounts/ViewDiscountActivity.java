@@ -20,6 +20,8 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapter;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapterModel;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapterModelImpl;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.UIUtils;
+import ar.edu.utn.frba.coeliacs.coeliacapp.models.search.ProductDetailsActivity;
+import ar.edu.utn.frba.coeliacs.coeliacapp.models.search.ShopDetailsActivity;
 
 public class ViewDiscountActivity extends AppCompatActivity {
 
@@ -58,7 +60,7 @@ public class ViewDiscountActivity extends AppCompatActivity {
         shopContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(ViewDiscountActivity.this, null); // TODO set view shop activity class
+                Intent intent = new Intent(ViewDiscountActivity.this, ShopDetailsActivity.class);
                 intent.putExtra(ViewDiscountActivity.EXTRA_SHOP, ((IconArrayAdapterModelImpl<Shop>)shop.get(position)).getObject());
                 startActivity(intent);
             }
@@ -67,7 +69,7 @@ public class ViewDiscountActivity extends AppCompatActivity {
         productsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(ViewDiscountActivity.this, null); // TODO set view product activity class
+                Intent intent = new Intent(ViewDiscountActivity.this, ProductDetailsActivity.class);
                 intent.putExtra(ViewDiscountActivity.EXTRA_PRODUCT, ((IconArrayAdapterModelImpl<Product>)products.get(position)).getObject());
                 startActivity(intent);
             }

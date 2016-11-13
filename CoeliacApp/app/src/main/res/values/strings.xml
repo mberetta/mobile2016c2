@@ -20,4 +20,11 @@
     <string name="distance_unit">km</string>
     <string name="cfg_set">Configuración actualizada</string>
     <string name="more_info">Clickea para obtener mas informacion</string>
+    <string name="error_product_not_found">Producto no encontrado</string>
+    <string name="barcode_reader">Lector de código de barras</string>
+    <string name="search_title">Búsqueda</string>
+    <string name="search_shop_title">Búsqueda de comercios</string>
+    <string name="search_product_title">Búsqueda de productos</string>
+    <string name="shop_detail_title">Ver comercio</string>
+    <string name="product_detail_title">Ver producto</string>
 </resources>
