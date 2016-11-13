@@ -62,27 +62,29 @@ public class DiscountsActivity extends AppCompatActivity {
         locProvider = new MapLocationProvider(this, new MapLocationProvider.MapLocationProviderListener() {
             @Override
             public void changeLocation(Location location) {
-                int radiusKm = CfgManager.getSearchDistance(DiscountsActivity.this);
+                if (location != null) {
+                    int radiusKm = CfgManager.getSearchDistance(DiscountsActivity.this);
 
-                locProvider.disconnect();
+                    locProvider.disconnect();
 
-                WebServicesEntryPoint.getShopsByRadius(location.getLatitude(), location.getLongitude(), radiusKm, new WebServiceCallback<List<Shop>>() {
-                    @Override
-                    public void onFinished(WebServiceResponse<List<Shop>> webServiceResponse) {
-                        if (webServiceResponse.getEx() != null) {
-                            finish();
-                            ErrorHandling.showWebServiceError(DiscountsActivity.this);
-                        } else {
-                            discounts = new ArrayList<DiscountIconArrayAdapterModel>();
-                            for (Shop shop : webServiceResponse.getBodyAsObject()) {
-                                for (Discount discount : shop.getDiscounts()) {
-                                    discounts.add(new DiscountIconArrayAdapterModel(discount, shop));
+                    WebServicesEntryPoint.getShopsByRadius(location.getLatitude(), location.getLongitude(), radiusKm, new WebServiceCallback<List<Shop>>() {
+                        @Override
+                        public void onFinished(WebServiceResponse<List<Shop>> webServiceResponse) {
+                            if (webServiceResponse.getEx() != null) {
+                                finish();
+                                ErrorHandling.showWebServiceError(DiscountsActivity.this);
+                            } else {
+                                discounts = new ArrayList<DiscountIconArrayAdapterModel>();
+                                for (Shop shop : webServiceResponse.getBodyAsObject()) {
+                                    for (Discount discount : shop.getDiscounts()) {
+                                        discounts.add(new DiscountIconArrayAdapterModel(discount, shop));
+                                    }
                                 }
+                                updateUI();
                             }
-                            updateUI();
                         }
-                    }
-                });
+                    });
+                }
             }
         });
 
