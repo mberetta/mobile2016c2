@@ -3,7 +3,10 @@
     package="ar.edu.utn.frba.coeliacs.coeliacapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature android:name="android.hardware.location.gps" />
+    <uses-feature android:name="android.hardware.location.network" />
 
     <application
         android:allowBackup="true"
@@ -19,16 +22,26 @@
             </intent-filter>
         </activity>
         <activity android:name=".models.MainActivity" />
-        <activity android:name=".models.MapActivity" />
+        <activity android:name=".models.map.MapActivity" />
         <activity android:name=".models.CodeBarReaderActivity" />
-        <activity android:name=".models.discounts.ViewDiscountActivity"></activity>
+        <activity android:name=".models.discounts.ViewDiscountActivity" />
         <activity android:name=".models.search.SearchActivity" />
-        <activity android:name=".models.search.ProductListActivity"></activity>
-        <activity android:name=".models.search.ShopListActivity"></activity>
+        <activity android:name=".models.search.ProductListActivity" />
+        <activity android:name=".models.search.ShopListActivity" />
         <activity android:name=".models.search.ProductDetailsActivity" />
         <activity android:name=".models.search.ShopDetailsActivity" />
         <activity android:name=".models.discounts.DiscountsActivity" />
-        <activity android:name=".models.ConfigActivity"></activity>
+        <activity android:name=".models.ConfigActivity" />
+        <activity android:name=".models.map.MapSettingsActivity" />
+        <activity android:name=".models.map.MapProductListActivity" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBPlF9QyQi41AN-Qa6QNMLj32rlIIb_JX4" />
+
     </application>
 
 </manifest>

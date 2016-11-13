@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.discounts.DiscountsActivity;
+import ar.edu.utn.frba.coeliacs.coeliacapp.models.map.MapActivity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.search.SearchActivity;
 
 public class MainActivity extends AppCompatActivity {

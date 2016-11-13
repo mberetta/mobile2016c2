@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">CoeliacApp</string>
     <string name="error_webservice">Error al consultar servidor.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="error_location">Error al obtener ubicación.</string>
     <string name="title_near_discounts">Descuentos cercanos</string>
     <string name="title_view_discount">Ver descuento</string>
@@ -17,6 +19,7 @@
     <string name="search_distance">Distancia de búsqueda</string>
     <string name="distance_unit">km</string>
     <string name="cfg_set">Configuración actualizada</string>
+    <string name="more_info">Clickea para obtener mas informacion</string>
     <string name="error_product_not_found">Producto no encontrado</string>
     <string name="barcode_reader">Lector de código de barras</string>
     <string name="search_title">Búsqueda</string>
@@ -24,4 +27,17 @@
     <string name="search_product_title">Búsqueda de productos</string>
     <string name="shop_detail_title">Ver comercio</string>
     <string name="product_detail_title">Ver producto</string>
+    <string name="next">Siguiente</string>
+    <string name="cancel">Cancelar</string>
+    <string name="ok">Ok</string>
+    <string name="location">"Ubicacion: "</string>
+    <string name="no_results_found">No se encontraron resultados</string>
+    <string name="use_gps">Usar localizacion GPS</string>
+    <string name="location_button">Ubicacion</string>
+    <string name="select_product">Seleccionar producto</string>
+    <string name="delete">Borrar</string>
+    <string name="sells_product">Que venda producto</string>
+    <string name="map">Mapa</string>
+    <string name="map_settings">Ajustes de mapa</string>
+    <string name="selected_product">Producto seleccionado:</string>
 </resources>
