@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.discounts.DiscountsActivity;
+import ar.edu.utn.frba.coeliacs.coeliacapp.models.login.LogInActivity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.map.MapActivity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.search.SearchActivity;
 
@@ -126,6 +127,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.show_config) {
             Intent intent = new Intent(MainActivity.this, ConfigActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (item.getItemId() == R.id.manage_session) {
+            Intent intent = new Intent(MainActivity.this, LogInActivity.class);
             startActivity(intent);
             return true;
         }
