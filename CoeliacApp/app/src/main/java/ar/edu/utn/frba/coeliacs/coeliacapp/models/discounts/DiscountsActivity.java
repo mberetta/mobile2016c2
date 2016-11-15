@@ -61,7 +61,16 @@ public class DiscountsActivity extends AppCompatActivity {
 
         locProvider = new MapLocationProvider(this, new MapLocationProvider.MapLocationProviderListener() {
             @Override
+            public void connected(Location location) {
+                updateLocation(location);
+            }
+
+            @Override
             public void changeLocation(Location location) {
+                updateLocation(location);
+            }
+
+            private void updateLocation(Location location) {
                 if (location != null) {
                     int radiusKm = CfgManager.getSearchDistance(DiscountsActivity.this);
 

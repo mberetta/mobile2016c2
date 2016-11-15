@@ -39,13 +39,15 @@ public class MapLocationProvider implements LocationListener, ConnectionCallback
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         try {
             connectionResult.startResolutionForResult((AppCompatActivity) context, 9000);
-            Toast.makeText(context, "Cannot connect with Location Services", Toast.LENGTH_SHORT);
+            Toast.makeText(context, "Cannot connect with Location Services", Toast.LENGTH_SHORT).show();
         } catch (IntentSender.SendIntentException e) {
             Log.i("Connection error", "onConnectionFailed: Cannot connect to location services");
         }
     }
 
     public interface MapLocationProviderListener {
+        void connected(Location location);
+
         void changeLocation(Location location);
     }
 
@@ -82,7 +84,7 @@ public class MapLocationProvider implements LocationListener, ConnectionCallback
                 switch (status.getStatusCode()) {
                     case SUCCESS:
                         Location location = FusedLocationApi.getLastLocation(googleApiClient);
-                        listener.changeLocation(location);
+                        listener.connected(location);
                         break;
                     case RESOLUTION_REQUIRED:
                         try {
@@ -147,7 +149,9 @@ public class MapLocationProvider implements LocationListener, ConnectionCallback
     }
 
     public void pause() {
-        FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+        if (googleApiClient.isConnected()){
+            FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+        }
     }
 
 }

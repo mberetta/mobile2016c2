@@ -88,23 +88,21 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         ((MapFragmentListener) this.getActivity()).mapReady();
     }
 
-    public void changeLocation(Location location) {
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        CameraPosition camera = new CameraPosition.Builder().target(latLng).zoom(12).build();
-
-        map.moveCamera(newCameraPosition(camera));
-    }
-
-    public void updateCamera(int cameraView) {
-        CameraPosition.Builder builder = new CameraPosition.Builder();
-
+    public void updateCameraByShops(int cameraView) {
         if (!markers.isEmpty()) {
             Shop shop = markers.get(0).getShop();
             LatLng latLang = new LatLng(shop.getLocation().getLat(), shop.getLocation().getLong());
-            builder.target(latLang);
-        }
 
-        CameraPosition camera = builder.zoom(cameraView).build();
+            CameraPosition camera = new CameraPosition.Builder().target(latLang).zoom(cameraView).build();
+            map.moveCamera(newCameraPosition(camera));
+        }
+    }
+
+    public void updateCameraByLocation(Location location, int cameraView) {
+        CameraPosition camera = new CameraPosition.Builder()
+                .target(new LatLng(location.getLatitude(), location.getLongitude()))
+                .zoom(cameraView)
+                .build();
         map.moveCamera(newCameraPosition(camera));
     }
 

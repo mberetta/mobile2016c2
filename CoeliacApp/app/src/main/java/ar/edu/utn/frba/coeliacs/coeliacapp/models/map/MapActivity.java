@@ -20,7 +20,7 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Entity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Product;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.State;
-import ar.edu.utn.frba.coeliacs.coeliacapp.models.map.MapLocationProvider.MapLocationProviderListener;
+import ar.edu.utn.frba.coeliacs.coeliacapp.location.MapLocationProvider;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.map.component.MapPreferencesManager;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.map.fragment.MapFragment;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.map.fragment.MapFragment.MapFragmentListener;
@@ -36,7 +36,7 @@ import static ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServicesEntryPo
 import static ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServicesEntryPoint.getShopsByRadius;
 import static ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServicesEntryPoint.getShopsByState;
 
-public class MapActivity extends AppCompatActivity implements MapFragmentListener, MapLocationProviderListener {
+public class MapActivity extends AppCompatActivity implements MapFragmentListener, MapLocationProvider.MapLocationProviderListener {
 
     private static final int REQUEST_CODE = 1001;
 
@@ -83,15 +83,15 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
 
     @Override
     protected void onPause() {
-        super.onPause();
         if (useLocation) {
             locationProvider.pause();
         }
+        super.onPause();
     }
 
     protected void onStop() {
-        super.onStop();
         locationProvider.disconnect();
+        super.onStop();
     }
 
     @Override
@@ -102,8 +102,18 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
     }
 
     @Override
+    public void connected(Location location) {
+        if (location != null) {
+            mapFragment.updateCameraByLocation(location, 14);
+            locationChanged(location);
+        }
+    }
+
+    @Override
     public void changeLocation(Location location) {
-        locationChanged(location);
+        if (location != null) {
+            locationChanged(location);
+        }
     }
 
     private void locationChanged(Location location) {
@@ -111,7 +121,6 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
             lastKnownLocation = location;
             preferences.saveLastKnownLocation(location);
             getShopsByRadius(location.getLatitude(), location.getLongitude(), radius, getCallback(14));
-            mapFragment.changeLocation(location);
         }
     }
 
@@ -151,7 +160,8 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
             makeText(MapActivity.this, R.string.no_results_found, LENGTH_SHORT).show();
         } else {
             mapFragment.setMarkers(shops);
-            mapFragment.updateCamera(cameraView);
+            if (!useLocation)
+                mapFragment.updateCameraByShops(cameraView);
         }
     }
 
