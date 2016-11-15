@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 import ar.edu.utn.frba.coeliacs.coeliacapp.configuration.CfgManager;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Discount;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
+import ar.edu.utn.frba.coeliacs.coeliacapp.location.LocationPermissionHandler;
 import ar.edu.utn.frba.coeliacs.coeliacapp.location.MapLocationProvider;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.components.IconArrayAdapter;
 import ar.edu.utn.frba.coeliacs.coeliacapp.webservices.WebServiceCallback;
@@ -32,12 +34,15 @@ public class DiscountsActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView noDiscountsTextView;
     private MapLocationProvider locProvider;
+    private LocationPermissionHandler locPermHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discounts);
         setTitle(R.string.title_near_discounts);
+
+        locPermHandler = new LocationPermissionHandler(this);
 
         progressBar = (ProgressBar) findViewById(R.id.progress_discounts);
         progressBar.setVisibility(View.VISIBLE);
@@ -64,6 +69,13 @@ public class DiscountsActivity extends AppCompatActivity {
             }
         }
 
+        if (locPermHandler.checkAndRequestIfNeeded()) {
+            getAndUseLocation();
+        }
+
+    }
+
+    private void getAndUseLocation() {
         locProvider = new MapLocationProvider(this, new MapLocationProvider.MapLocationProviderListener() {
             @Override
             public void connected(Location location) {
@@ -103,7 +115,6 @@ public class DiscountsActivity extends AppCompatActivity {
         });
 
         locProvider.resume();
-
     }
 
     private void updateUI() {
@@ -122,4 +133,15 @@ public class DiscountsActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == LocationPermissionHandler.PERM_REQUEST) {
+            if (locPermHandler.permissionGranted(grantResults)) {
+                getAndUseLocation();
+            } else {
+                Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+    }
 }
