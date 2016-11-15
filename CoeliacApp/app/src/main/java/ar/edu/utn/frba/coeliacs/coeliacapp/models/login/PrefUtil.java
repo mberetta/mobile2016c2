@@ -22,9 +22,21 @@ public class PrefUtil {
         editor.apply();
     }
 
+    public void saveUserId(String userId) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("userId", userId);
+        editor.apply();
+    }
+
     public String getToken() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
         return sp.getString("token", null);
+    }
+
+    public String getUserId() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        return sp.getString("userId", null);
     }
 
     public void clearToken() {

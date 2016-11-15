@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
@@ -28,16 +29,12 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.models.MainActivity;
 
 public class LogInActivity extends AppCompatActivity {
 
-
     private CallbackManager callbackManager;
     private TextView info;
     private ImageView profileImgView;
     private LoginButton loginButton;
     private Button boton_acceso;
-
     private PrefUtil prefUtil;
-    private IntentUtil intentUtil;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,87 +43,51 @@ public class LogInActivity extends AppCompatActivity {
         FacebookSdk.setApplicationId(getResources().getString(R.string.facebook_app_id));
         setContentView(R.layout.activity_fb);
 
-//Facebook login
+        //Facebook login
         callbackManager = CallbackManager.Factory.create();
         prefUtil = new PrefUtil(this);
-        intentUtil = new IntentUtil(this);
 
         info = (TextView) findViewById(R.id.info);
         profileImgView = (ImageView) findViewById(R.id.profile_img);
         loginButton = (LoginButton) findViewById(R.id.login_button);
         boton_acceso = (Button) findViewById(R.id.boton_acceso);
+        boton_acceso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LogInActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
-        if(prefUtil.getToken()!= null) {
-            boton_acceso.setVisibility(View.VISIBLE);
-            boton_acceso.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(LogInActivity.this, MainActivity.class);
-                /* PASS BUNDLE IF ARGUMENTS NEEDED
-                Bundle b = new Bundle();
-                b.putString("NOMBRE", txtNombre.getText().toString());
-                intent.putExtras(b);
-                */
-                    startActivity(intent);
-                }
-            });
-        }
+        updateVisibility(prefUtil.getToken()!= null);
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Profile profile = Profile.getCurrentProfile();
-                info.setText(message(profile));
+                showProfile();
 
                 String userId = loginResult.getAccessToken().getUserId();
                 String accessToken = loginResult.getAccessToken().getToken();
 
-                // save accessToken to SharedPreference
+                // save accessToken and userId to SharedPreference
                 prefUtil.saveAccessToken(accessToken);
+                prefUtil.saveUserId(userId);
 
-                String profileImgUrl = "https://graph.facebook.com/" + userId + "/picture?type=large";
-
-
-                Glide.with(LogInActivity.this)
-                        .load(profileImgUrl)
-                        .into(profileImgView);
-
-                boton_acceso.setVisibility(View.VISIBLE);
-
-                boton_acceso.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(LogInActivity.this, MainActivity.class);
-                /* PASS BUNDLE IF ARGUMENTS NEEDED
-                Bundle b = new Bundle();
-                b.putString("NOMBRE", txtNombre.getText().toString());
-                intent.putExtras(b);
-                */
-                        startActivity(intent);
-                    }
-                });
-
-
-
-                }
-
-
+                updateVisibility(true);
+            }
 
             @Override
             public void onCancel() {
-                info.setText("Login attempt cancelled.");
+                updateVisibility(false);
+                Toast.makeText(LogInActivity.this, "Log in cancelado", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(FacebookException e) {
-                e.printStackTrace();
-                info.setText("Login attempt failed.");
+                updateVisibility(false);
+                Toast.makeText(LogInActivity.this, "Log in fallido", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
-
 
     }
 
@@ -136,17 +97,23 @@ public class LogInActivity extends AppCompatActivity {
         return true;
     }
 
+    private void showProfile() {
+        Profile profile = Profile.getCurrentProfile();
+        info.setText(message(profile));
+        String profileImgUrl = "https://graph.facebook.com/" + prefUtil.getUserId() + "/picture?type=large";
+        Glide.with(LogInActivity.this)
+                .load(profileImgUrl)
+                .into(profileImgView);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.layout.activity_token:
-                intentUtil.showAccessToken();
-                break;
             case R.id.action_bypass_login:
                 Intent intent = new Intent(LogInActivity.this, MainActivity.class);
                 startActivity(intent);
-                break;
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -156,8 +123,7 @@ public class LogInActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         deleteAccessToken();
-        Profile profile = Profile.getCurrentProfile();
-        info.setText(message(profile));
+        showProfile();
     }
 
 
@@ -170,7 +136,7 @@ public class LogInActivity extends AppCompatActivity {
     private String message(Profile profile) {
         StringBuilder stringBuffer = new StringBuilder();
         if (profile != null) {
-            stringBuffer.append("Welcome ").append(profile.getName());
+            stringBuffer.append("Hola ").append(profile.getName());
         }
         return stringBuffer.toString();
     }
@@ -186,6 +152,7 @@ public class LogInActivity extends AppCompatActivity {
                     //User logged out
                     prefUtil.clearToken();
                     clearUserArea();
+                    updateVisibility(false);
                 }
             }
         };
@@ -194,10 +161,13 @@ public class LogInActivity extends AppCompatActivity {
     private void clearUserArea() {
         info.setText("");
         profileImgView.setImageDrawable(null);
-        boton_acceso.setVisibility(View.GONE);
     }
-    //
 
-
+    private void updateVisibility(boolean logged) {
+        info.setVisibility(logged ? View.VISIBLE : View.GONE);
+        profileImgView.setVisibility(logged ? View.VISIBLE : View.GONE);
+        boton_acceso.setVisibility(logged ? View.VISIBLE : View.GONE);
+        loginButton.setVisibility(View.VISIBLE);
+    }
 
 }
