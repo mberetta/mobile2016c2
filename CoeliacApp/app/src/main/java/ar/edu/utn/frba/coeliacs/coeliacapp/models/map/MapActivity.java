@@ -194,7 +194,7 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
                 makeText(this, getString(R.string.cfg_set), LENGTH_SHORT).show();
                 updateMap();
                 break;
-            case 1000:
+            case MapLocationProvider.LOCATION_PROMPT_USER:
                 if (resultCode == 0) {
                     updateMap();
                 }

@@ -47,4 +47,5 @@
     <string name="action_bypass_login">Bypass login</string>
     <string name="no_discounts">No hay descuentos cercanos.</string>
     <string name="permission_denied">Permiso denegado</string>
+    <string name="location_precision_not_enough">Precisión solicitada no satisfecha. La funcionalidad puede no funcionar como se espera.</string>
 </resources>

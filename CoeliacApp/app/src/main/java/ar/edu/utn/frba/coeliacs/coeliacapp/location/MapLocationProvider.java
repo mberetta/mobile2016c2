@@ -35,6 +35,8 @@ import static com.google.android.gms.location.LocationSettingsStatusCodes.SETTIN
 
 public class MapLocationProvider implements LocationListener, ConnectionCallbacks, OnConnectionFailedListener {
 
+    public static final int LOCATION_PROMPT_USER = 1000;
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         try {
@@ -88,7 +90,7 @@ public class MapLocationProvider implements LocationListener, ConnectionCallback
                         break;
                     case RESOLUTION_REQUIRED:
                         try {
-                            status.startResolutionForResult((AppCompatActivity) context, 1000);
+                            status.startResolutionForResult((AppCompatActivity) context, LOCATION_PROMPT_USER);
                         } catch (IntentSender.SendIntentException e) {
                             // Ignore the error.
                         }

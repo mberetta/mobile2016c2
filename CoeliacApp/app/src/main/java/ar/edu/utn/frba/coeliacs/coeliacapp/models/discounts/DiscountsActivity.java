@@ -144,4 +144,18 @@ public class DiscountsActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case MapLocationProvider.LOCATION_PROMPT_USER:
+                if (resultCode == 0) {
+                    Toast.makeText(this, R.string.location_precision_not_enough, Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
 }
