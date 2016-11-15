@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ public class DiscountsActivity extends AppCompatActivity {
     private ListView discountsListView;
     private ArrayList<DiscountIconArrayAdapterModel> discounts;
     private ProgressBar progressBar;
+    private TextView noDiscountsTextView;
     private MapLocationProvider locProvider;
 
     @Override
@@ -39,6 +41,9 @@ public class DiscountsActivity extends AppCompatActivity {
 
         progressBar = (ProgressBar) findViewById(R.id.progress_discounts);
         progressBar.setVisibility(View.VISIBLE);
+
+        noDiscountsTextView = (TextView) findViewById(R.id.no_discounts_text);
+        noDiscountsTextView.setVisibility(View.GONE);
 
         discountsListView = (ListView) findViewById(R.id.discounts_list_view);
         discountsListView.setVisibility(View.GONE);
@@ -103,8 +108,12 @@ public class DiscountsActivity extends AppCompatActivity {
 
     private void updateUI() {
         progressBar.setVisibility(View.GONE);
-        discountsListView.setVisibility(View.VISIBLE);
-        discountsListView.setAdapter(new IconArrayAdapter<DiscountIconArrayAdapterModel>(DiscountsActivity.this, discounts));
+        if (discounts.size() != 0) {
+            discountsListView.setVisibility(View.VISIBLE);
+            discountsListView.setAdapter(new IconArrayAdapter<DiscountIconArrayAdapterModel>(DiscountsActivity.this, discounts));
+        } else {
+            noDiscountsTextView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
