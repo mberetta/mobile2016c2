@@ -40,4 +40,9 @@
     <string name="map">Mapa</string>
     <string name="map_settings">Ajustes de mapa</string>
     <string name="selected_product">Producto seleccionado:</string>
+    <string name="facebook_app_id">1795201244082395</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login_fb">LoginFbActivity</string>
+    <string name="action_show_access_token_title">Print Access Token</string>
+    <string name="action_bypass_login">Bypass login</string>
 </resources>
