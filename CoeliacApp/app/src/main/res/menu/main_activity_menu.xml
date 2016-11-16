@@ -4,4 +4,7 @@
     <item android:id="@+id/show_config"
         android:title="@string/show_config" />
 
+    <item android:id="@+id/manage_session"
+        android:title="@string/manage_session" />
+
 </menu>
