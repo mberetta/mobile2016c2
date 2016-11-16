@@ -111,7 +111,7 @@ public class MapLocationProvider implements LocationListener, ConnectionCallback
         locationRequest = new LocationRequest();
         locationRequest.setInterval(5000);
         locationRequest.setFastestInterval(1000);
-        locationRequest.setPriority(PRIORITY_HIGH_ACCURACY);
+//        locationRequest.setPriority(PRIORITY_HIGH_ACCURACY);
         FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
     }
 

@@ -231,7 +231,7 @@ public class MapSettingsActivity extends AppCompatActivity {
 
     private void seekBar(int actualProgress) {
         seekBar = (SeekBar) findViewById(R.id.seekBar);
-        seekBar.setMax(400);
+        seekBar.setMax(200);
         seekBar.setProgress(actualProgress);
 
         seekText = (TextView) findViewById(R.id.seek_text);

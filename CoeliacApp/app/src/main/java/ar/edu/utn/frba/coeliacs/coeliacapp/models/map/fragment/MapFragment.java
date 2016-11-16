@@ -84,6 +84,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+        map.setMyLocationEnabled(true);
         map.setOnInfoWindowClickListener(this);
         ((MapFragmentListener) this.getActivity()).mapReady();
     }

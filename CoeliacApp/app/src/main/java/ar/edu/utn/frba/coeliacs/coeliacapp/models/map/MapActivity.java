@@ -50,6 +50,8 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
     private Location lastKnownLocation;
     private Product selectedProduct;
 
+    private boolean messageShown = false;
+
     @Override
     public void mapReady() {
         updateMap();
@@ -157,12 +159,18 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
 
     private void processResponse(List<Shop> shops, int cameraView) {
         if (shops.isEmpty()) {
-            makeText(MapActivity.this, R.string.no_results_found, LENGTH_SHORT).show();
-        } else {
+            if(!messageShown) {
+                makeText(MapActivity.this, R.string.no_results_found, LENGTH_SHORT).show();
+                messageShown = true;
+            }
+        } else if (!mapFragment.isDetached()) {
+            messageShown = false;
             mapFragment.setMarkers(shops);
-            if (!useLocation)
+            if (!useLocation) {
                 mapFragment.updateCameraByShops(cameraView);
+            }
         }
+
     }
 
     @Override
@@ -191,7 +199,9 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
         switch (requestCode) {
             case REQUEST_CODE:
                 updatePreferences();
-                makeText(this, getString(R.string.cfg_set), LENGTH_SHORT).show();
+                if (RESULT_OK == resultCode) {
+                    makeText(this, getString(R.string.cfg_set), LENGTH_SHORT).show();
+                }
                 updateMap();
                 break;
             case MapLocationProvider.LOCATION_PROMPT_USER:
