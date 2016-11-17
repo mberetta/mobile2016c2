@@ -163,7 +163,7 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
                 makeText(MapActivity.this, R.string.no_results_found, LENGTH_SHORT).show();
                 messageShown = true;
             }
-        } else if (!mapFragment.isDetached()) {
+        } else if (mapFragment.isAdded()) {
             messageShown = false;
             mapFragment.setMarkers(shops);
             if (!useLocation) {
