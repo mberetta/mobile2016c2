@@ -81,7 +81,12 @@ public class MapLocationProvider implements LocationListener, ConnectionCallback
 
         updateLocationRequest();
 
-        PendingResult<LocationSettingsResult> settingsResult = SettingsApi.checkLocationSettings(googleApiClient, new LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build());
+        LocationSettingsRequest locationRequest = new LocationSettingsRequest.Builder()
+                .setAlwaysShow(true)
+                .addLocationRequest(this.locationRequest)
+                .build();
+        
+        PendingResult<LocationSettingsResult> settingsResult = SettingsApi.checkLocationSettings(googleApiClient, locationRequest);
         settingsResult.setResultCallback(new ResultCallback<LocationSettingsResult>() {
             @Override
             public void onResult(LocationSettingsResult result) {
