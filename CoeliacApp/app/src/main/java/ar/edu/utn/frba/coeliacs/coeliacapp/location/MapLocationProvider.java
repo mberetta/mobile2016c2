@@ -35,7 +35,9 @@ import static com.google.android.gms.location.LocationSettingsStatusCodes.SETTIN
 
 public class MapLocationProvider implements LocationListener, ConnectionCallbacks, OnConnectionFailedListener {
 
-    public static final int LOCATION_PROMPT_USER = 1000;
+    public static final int LOCATION_PROMPT_USER = 3000;
+
+    private LocationPermissionHandler permissionHandler;
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -67,12 +69,13 @@ public class MapLocationProvider implements LocationListener, ConnectionCallback
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+
+        permissionHandler = new LocationPermissionHandler(context);
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        if (checkSelfPermission(context, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
-            Toast.makeText(context, "Cannot get location", Toast.LENGTH_SHORT).show();
+        if (!permissionHandler.checkAndRequestIfNeeded()) {
             return;
         }
 

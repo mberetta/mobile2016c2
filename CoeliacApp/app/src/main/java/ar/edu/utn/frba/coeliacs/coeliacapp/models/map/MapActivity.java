@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Entity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Product;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.State;
+import ar.edu.utn.frba.coeliacs.coeliacapp.location.LocationPermissionHandler;
 import ar.edu.utn.frba.coeliacs.coeliacapp.location.MapLocationProvider;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.map.component.MapPreferencesManager;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.map.fragment.MapFragment;
@@ -52,6 +54,8 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
 
     private boolean messageShown = false;
 
+    private LocationPermissionHandler permissionHandler;
+
     @Override
     public void mapReady() {
         updateMap();
@@ -63,24 +67,19 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
         setTitle(getString(R.string.map));
         setContentView(R.layout.activity_map);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        preferences = new MapPreferencesManager(this);
+        loadPreferences();
 
+        permissionHandler = new LocationPermissionHandler(this);
         locationProvider = new MapLocationProvider(this, this);
         mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+    }
 
-        preferences = new MapPreferencesManager(this);
-
+    private void loadPreferences() {
         radius = preferences.getRadius();
         useLocation = preferences.getUseLocation();
         location = preferences.getLocation();
         lastKnownLocation = preferences.getLastKnownLocation();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (useLocation) {
-            locationProvider.resume();
-        }
     }
 
     @Override
@@ -108,6 +107,8 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
         if (location != null) {
             mapFragment.updateCameraByLocation(location, 14);
             locationChanged(location);
+        } else if (lastKnownLocation != null) {
+            mapFragment.updateCameraByLocation(lastKnownLocation, 14);
         }
     }
 
@@ -205,7 +206,7 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
                 updateMap();
                 break;
             case MapLocationProvider.LOCATION_PROMPT_USER:
-                if (resultCode == 0) {
+                if (resultCode == RESULT_OK) {
                     updateMap();
                 }
                 break;
@@ -224,8 +225,10 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
         if (!useLocation) {
             locationProvider.disconnect();
             showByLocation(location);
-        } else {
+            mapFragment.disableMyLocation();
+        } else if (permissionHandler.checkAndRequestIfNeeded()) {
             locationProvider.resume();
+            mapFragment.enableMyLocation();
             Location currentLocation = locationProvider.currentLocation();
             if (currentLocation != null) {
                 lastKnownLocation = currentLocation;
@@ -259,4 +262,18 @@ public class MapActivity extends AppCompatActivity implements MapFragmentListene
             return;
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == LocationPermissionHandler.PERM_REQUEST) {
+            if (permissionHandler.permissionGranted(grantResults)) {
+                updateMap();
+            } else {
+                useLocation = false;
+                preferences.saveUseLocation(useLocation);
+                Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 }
