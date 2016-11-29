@@ -203,7 +203,9 @@ public class MapSettingsActivity extends AppCompatActivity {
                 }).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finishDialog(values.get(position[0]), parent);
+                        if (position[0] != null) {
+                            finishDialog(values.get(position[0]), parent);
+                        }
                     }
                 }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
@@ -216,10 +218,12 @@ public class MapSettingsActivity extends AppCompatActivity {
             builder = builder.setNeutralButton(getString(R.string.next), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if (parent != null) {
-                        parent.dismiss();
+                    if (position[0] != null){
+                        if (parent != null) {
+                            parent.dismiss();
+                        }
+                        elementCallback.apply(values.get(position[0]), dialog);
                     }
-                    elementCallback.apply(values.get(position[0]), dialog);
                 }
             });
         }

@@ -19,6 +19,7 @@ import java.util.List;
 import ar.edu.utn.frba.coeliacs.coeliacapp.R;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.CoordinatesLocation;
 import ar.edu.utn.frba.coeliacs.coeliacapp.domain.Shop;
+import ar.edu.utn.frba.coeliacs.coeliacapp.location.LocationPermissionHandler;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.discounts.ViewDiscountActivity;
 import ar.edu.utn.frba.coeliacs.coeliacapp.models.search.ShopDetailsActivity;
 
@@ -84,9 +85,16 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        map.setMyLocationEnabled(true);
         map.setOnInfoWindowClickListener(this);
         ((MapFragmentListener) this.getActivity()).mapReady();
+    }
+
+    public void enableMyLocation() {
+        map.setMyLocationEnabled(true);
+    }
+
+    public void disableMyLocation() {
+        map.setMyLocationEnabled(false);
     }
 
     public void updateCameraByShops(int cameraView) {
