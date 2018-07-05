@@ -17,27 +17,48 @@ import ar.edu.utn.frba.coeliacs.coeliacapp.R;
  */
 public class IconArrayAdapter<T extends IconArrayAdapterModel> extends ArrayAdapter<T> {
 
-    private Context context;
     private List<T> objects;
+    LayoutInflater layoutInflater;
 
     public IconArrayAdapter(Context context, List<T> objects) {
         super(context, -1, objects);
-        this.context = context;
+        // Buscamos el LayoutInflater una sola vez.
+        this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.objects = objects;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = layoutInflater.inflate(R.layout.icon_array_adapter, parent, false);
-        TextView titleTextView = (TextView) rowView.findViewById(R.id.titleTextView);
-        TextView subtitleTextView = (TextView) rowView.findViewById(R.id.subtitleTextView);
-        ImageView iconImageView = (ImageView) rowView.findViewById(R.id.iconImageView);
         T object = objects.get(position);
-        titleTextView.setText(object.getTitle());
-        subtitleTextView.setText(object.getSubtitle());
-        iconImageView.setImageResource(object.getIconResId());
-        return rowView;
+        final ViewHolder vh;
+        // convertView es una vista a reutilizar.
+        if (convertView == null) {
+            // No hay para reutilizar, inflamos una nueva y creamos el ViewHolder.
+            convertView = layoutInflater.inflate(R.layout.icon_array_adapter, parent, false);
+            vh = new ViewHolder(convertView);
+            convertView.setTag(vh);
+        }
+        else {
+            // Hay una para reutilizar, buscamos el ViewHolder.
+            vh = (ViewHolder) convertView.getTag();
+        }
+        // Completamos la info.
+        vh.titleTextView.setText(object.getTitle());
+        vh.subtitleTextView.setText(object.getSubtitle());
+        vh.iconImageView.setImageResource(object.getIconResId());
+        return convertView;
     }
 
+    // El ViewHolder sirve para guardar las referencias a las vistas y buscarlas una sola vez.
+    private class ViewHolder {
+        TextView titleTextView;
+        TextView subtitleTextView;
+        ImageView iconImageView;
+
+        ViewHolder(View view) {
+            titleTextView = (TextView) view.findViewById(R.id.titleTextView);
+            subtitleTextView = (TextView) view.findViewById(R.id.subtitleTextView);
+            iconImageView = (ImageView) view.findViewById(R.id.iconImageView);
+        }
+    }
 }
